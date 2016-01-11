@@ -99,6 +99,8 @@ class UI {
 				break;
 			}
 			
+			int input = 0;
+			
 			do{
 				int size = liste.size();
 				for(int i = 0; i < size; i++){
@@ -108,8 +110,6 @@ class UI {
 				System.out.println();
 				System.out.println("Choose a position by entering its index!");
 				str = scan.next();
-				
-				int input = 0;
 				
 				try{
 					input = Integer.parseInt(str);
@@ -123,7 +123,7 @@ class UI {
 				
 			}while(str == "");		
 			
-		g1.brett.move(liste.get(Integer.parseInt(str)-1));	
+		g1.brett.move(liste.get(input-1));	
 		
 		if(g1.brett.SchachMatt(!whiteTurn)){
 			g1.Win(whiteTurn);

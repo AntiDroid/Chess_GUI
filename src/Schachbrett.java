@@ -230,12 +230,11 @@ class Schachbrett {
 		Figure f = null;
 		do{
 		System.out.println("Your pawn has reached the other side!");
-		System.out.println();
-		System.out.println("You can select one of the following figures!");
-		System.out.println("1...Knight");
-		System.out.println("2...Rook");
-		System.out.println("3...Bishop");
-		System.out.println("4...Queen");
+		System.out.println("\nYou can select one of the following figures!");
+		System.out.println("1 - Knight");
+		System.out.println("2 - Rook");
+		System.out.println("3 - Bishop");
+		System.out.println("4 - Queen");
 		
 		try
 		{
@@ -268,7 +267,7 @@ class Schachbrett {
 		
 		}
 		catch(Exception e){
-			System.out.println("Problem bei der Bauernumwandlung");
+			
 		}
 		
 		Fig[selectedFig] = f;
@@ -325,7 +324,8 @@ class Schachbrett {
 		}
 		
 		for(int i = pawnMin; i < pawnMax; i++){
-			((Pawn)Fig[i]).SetEnPassant(false);
+			if(Fig[i] instanceof Pawn)
+				((Pawn)Fig[i]).SetEnPassant(false);
 		}
 		
 		
