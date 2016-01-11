@@ -19,7 +19,6 @@ class Schachbrett {
 	
 	private int selectedFig;
 	private Point2D posSelectedFig;
-	private Scanner scan;
 	
 	private Boolean whiteCheck;
 	private Boolean blackCheck;
@@ -57,13 +56,20 @@ class Schachbrett {
 	public int getSelFig(){
 		return selectedFig;
 	}
+	
 	public Boolean getWhiteChecK(){
 		return whiteCheck;
 	}
+
 	public Boolean getBlackChecK(){
 		return blackCheck;
 	}
 	
+	public Field[][] getFelder(){
+		
+		return this.felder;
+	}
+
 	/**
 	 * Die Figuren beider Teams werden erstellt,
 	 * dem jeweiligen Team zugewiesen und mit Startpositionen versehen. 
@@ -147,100 +153,6 @@ class Schachbrett {
 		}
 
 	/**
-	 * Die jeweils gegnerischen FIguren werden ermittelt.
-	 * Diese werden hinsichtlich ihrer Bewegungsmoeglichkeiten analysiert,
-	 * ob sie die Position des jeweils gegnerischen Kings beinhalten.
-	 * @param isW welches Team ist im Schach
-	 * @return ob das jeweilige Team im Schach ist
-	 */
-	public Boolean Schach(Boolean isW){
-		
-		int gegnerStart, gegnerMax, myKingIndex;
-		
-		if(isW){
-			gegnerStart = 16;
-			gegnerMax = 31;
-			myKingIndex = 14;
-		}
-		else{
-			gegnerStart = 0;
-			gegnerMax = 15;
-			myKingIndex = 30;
-		}
-		
-		Point2D origCoord = posSelectedFig;
-		Point2D kingCoord = searchFigCoordByIndex(myKingIndex);
-		
-		for(int i = gegnerStart; i <= gegnerMax; i++){
-			Point2D curCoord = searchFigCoordByIndex(i);
-			if(curCoord.getX() == 100000)
-				continue;
-			selectFigur(curCoord);
-			
-			if(movePossibilities().contains(kingCoord)){
-				selectFigur(origCoord);
-				return true;
-			}
-		}
-		
-		selectFigur(origCoord);
-		return false;
-	}
-	
-	/**
-	 * Wenn das ausgewaehlte Team sich mit keiner Figur bewegen kann.
-	 * Dazu wird fuer jedes Teammitglied eine Analyse der Bewegungsmoeglichkeiten
-	 * aufgestellt, welche im Pattfall alle nicht vorhanden sind.
-	 * @param isW welches Team ist im Patt
-	 * @return ob das jeweilige Team im Patt ist
-	 */
-	public Boolean Patt(Boolean isW){
-		
-		int teamStart, teamMax;
-		
-		if(isW){
-			teamStart = 0;
-			teamMax = 15;
-		}
-		else{
-			teamStart = 16;
-			teamMax = 31;
-		}
-		
-		for(int i = teamStart; i <= teamMax; i++){
-			Point2D curCoord = searchFigCoordByIndex(i);
-			if(curCoord.getX() == 100000)
-				continue;
-				
-			selectFigur(curCoord);
-			if(filter(movePossibilities(), isW).size() != 0){
-				return false;
-			}
-		}
-		return true;	
-	}
-	
-	/**
-	 * Wenn das ausgewaehlte Team im Schach steht und einem Patt unterliegt.
-	 * @param isW welches Team im SchachMatt steht
-	 * @return ob das jeweilige Team im SchachMatt steht
-	 */
-	public Boolean SchachMatt(Boolean isW){
-		
-		Boolean teamCheck;
-		
-		if(isW)
-			teamCheck = whiteCheck;
-		else
-			teamCheck = blackCheck;
-		
-		if(teamCheck && Patt(isW))
-			return true;
-		
-		return false;
-	}
-	
-	/**
 	 * eine bestimmte Figur wird als selektierte Figur gespeichert
 	 * @param koord das Selektieren einer Figur wird anhand der Koordinate auf 
 	 * der sie steht abgewickelt
@@ -259,11 +171,22 @@ class Schachbrett {
 		}
 	}
 	
-	public Field[][] getFelder(){
+	/**
+	 * Anhand der FigurenID wird die Koordinate bestimmt
+	 * @param index Figurenindex
+	 * @return Koordinate der uebergebenen Figur
+	 */
+	public Point2D searchFigCoordByIndex(int index){
 		
-		return this.felder;
+		for(Field[] fx: felder){
+			for(Field f: fx){
+				if(f.getBelegung() == index)
+					return f.getKoordinate();
+			}
+		}
+		return new Point2D(100000, 100000);
 	}
-	
+
 	/**
 	 * die eingegebene Koordinate wird in die vom Programm verstaendliche umgewandelt
 	 * @param koord eingegebene Koordinate nach dem angezeigten System
@@ -297,18 +220,83 @@ class Schachbrett {
 	}
 	
 	/**
+	 * Der Bauerntausch mit einem Eingabedialog fuer die gewuenschte Figur.
+	 * @param iW die Teamfarbe des Bauern
+	 */
+	public void changePawn(Boolean iW){
+		
+		Scanner scanner = new Scanner(System.in);
+		int x = 0;
+		Figure f = null;
+		do{
+		System.out.println("Your pawn has reached the other side!");
+		System.out.println();
+		System.out.println("You can select one of the following figures!");
+		System.out.println("1...Knight");
+		System.out.println("2...Rook");
+		System.out.println("3...Bishop");
+		System.out.println("4...Queen");
+		
+		try
+		{
+		x = Integer.parseInt(scanner.next());
+		}
+		catch(NumberFormatException e){
+			x = 5;
+		}
+		}while((x>4) && (x<1));
+		
+		try{
+			
+		switch(x){
+		
+		case 1:
+			f = new Knight(iW, Fig[selectedFig].getSP());
+			break;
+		case 2:
+			f = new Rook(iW, Fig[selectedFig].getSP());
+			break;
+			
+		case 3:
+			f = new Bishop(iW, Fig[selectedFig].getSP());
+			break;
+			
+		case 4:
+			f = new Queen(iW, Fig[selectedFig].getSP());
+			break;
+		}
+		
+		}
+		catch(Exception e){
+			System.out.println("Problem bei der Bauernumwandlung");
+		}
+		
+		Fig[selectedFig] = f;
+	}
+
+	/**
+	 * Die Methode leert das aktuelle Feld und setzt die Figur auf das Zielfeld.
+	 * @param pos auf welche Position gewechselt werden soll
+	 */
+	public void changePos(Point2D pos){
+		
+		felder[(int)posSelectedFig.getX()][(int)posSelectedFig.getY()].clear();
+		felder[(int)pos.getX()][(int)pos.getY()].addFigur(selectedFig);
+		
+		selectFigur(pos);
+	}
+	
+	/**
 	 * Methode, welche bei dem Schlagen einer Figur aufgerufen wird.
 	 * Meldungen werden ausgegeben und das angegriffene Feld wird geleert.
 	 * @param p Feld des zu Schlagenden
 	 */
 	public void hit(Point2D p){
 		
-		System.out.println();	
-		System.out.println(Fig[felder[(int)p.getX()][(int)p.getY()].getBelegung()].getName()+" has been terminated!");
-		System.out.println();
+		System.out.println("\n"+Fig[felder[(int)p.getX()][(int)p.getY()].getBelegung()].getName()+" has been terminated!\n");
 		felder[(int)p.getX()][(int)p.getY()].clear();
 	}
-	
+
 	/**
 	 * In dieser Methode begibt sich die Figur auf das jeweilige Feld je nachdem,
 	 * um welche es sich handelt.
@@ -368,7 +356,7 @@ class Schachbrett {
 					rochRook = 16;
 				}
 			}
-
+	
 			Point2D origSel = posSelectedFig;
 			//die Position des Turms aendern
 			selectFigur(searchFigCoordByIndex(rochRook));
@@ -399,7 +387,7 @@ class Schachbrett {
 			((Pawn)Fig[selectedFig]).setDoublemove(false);
 			
 		}
-
+	
 		//Wenn auf dem Endfeld einer drauf ist, weghaun!
 		if(gegner != Field.emptyField){
 			hit(searchFigCoordByIndex(gegner));
@@ -434,124 +422,7 @@ class Schachbrett {
 				blackCheck = false;
 		}
 	}
-	
-	/**
-	 * Der Bauerntausch mit einem Eingabedialog fuer die gewuenschte Figur.
-	 * @param iW die Teamfarbe des Bauern
-	 */
-	public void changePawn(Boolean iW){
-		
-		scan = new Scanner(System.in);
-		int x = 0;
-		Figure f = null;
-		do{
-		System.out.println("Your pawn has reached the other side!");
-		System.out.println();
-		System.out.println("You can select one of the following figures!");
-		System.out.println("1...Knight");
-		System.out.println("2...Rook");
-		System.out.println("3...Bishop");
-		System.out.println("4...Queen");
-		
-		try
-		{
-		x = Integer.parseInt(scan.next());
-		}
-		catch(NumberFormatException e){
-			x = 5;
-		}
-		}while((x>4) && (x<1));
-		
-		try{
-			
-		switch(x){
-		
-		case 1:
-			f = new Knight(iW, Fig[selectedFig].getSP());
-			break;
-		case 2:
-			f = new Rook(iW, Fig[selectedFig].getSP());
-			break;
-			
-		case 3:
-			f = new Bishop(iW, Fig[selectedFig].getSP());
-			break;
-			
-		case 4:
-			f = new Queen(iW, Fig[selectedFig].getSP());
-			break;
-		}
-		
-		}
-		catch(Exception e){
-			System.out.println("Problem bei der Bauernumwandlung");
-		}
-		
-		Fig[selectedFig] = f;
-	}
 
-	/**
-	 * eine uebergebene Liste wird gefiltert, damit keine schacherzeugenden Bewegungen
-	 * mehr vorhanden sind
-	 * @param moves die zu filternde Bewegungsliste
-	 * @param iW die Teamfarbe der Figur
-	 * @return die gefilterte 
-	 */
-	public List<Point2D> filter(List<Point2D> moves, Boolean iW){
-		
-		Point2D realPos = posSelectedFig;
-		
-		int origBelegung;
-		
-		Boolean remove;
-		
-		//es wird von oben runtergezaehlt, um beim Entfernen keine Indexprobleme zu erzeugen
-		for(int i = moves.size()-1; i >= 0; i--){
-			remove = false;
-			origBelegung = felder[(int)moves.get(i).getX()][(int)moves.get(i).getY()].getBelegung();
-			felder[(int)moves.get(i).getX()][(int)moves.get(i).getY()].clear();
-			
-			changePos(moves.get(i));
-			if(this.Schach(iW)){
-				remove = true;
-			}
-			changePos(realPos);
-			felder[(int)moves.get(i).getX()][(int)moves.get(i).getY()].addFigur(origBelegung);
-			if(remove)
-				moves.remove(i);
-		}
-
-		return moves;	
-	}
-	
-	/**
-	 * Die Methode leert das aktuelle Feld und setzt die Figur auf das Zielfeld.
-	 * @param pos auf welche Position gewechselt werden soll
-	 */
-	public void changePos(Point2D pos){
-		
-		felder[(int)posSelectedFig.getX()][(int)posSelectedFig.getY()].clear();
-		felder[(int)pos.getX()][(int)pos.getY()].addFigur(selectedFig);
-		
-		selectFigur(pos);
-	}
-	
-	/**
-	 * Anhand der FigurenID wird die Koordinate bestimmt
-	 * @param index Figurenindex
-	 * @return Koordinate der uebergebenen Figur
-	 */
-	public Point2D searchFigCoordByIndex(int index){
-		
-		for(Field[] fx: felder){
-			for(Field f: fx){
-				if(f.getBelegung() == index)
-					return f.getKoordinate();
-			}
-		}
-		return new Point2D(100000, 100000);
-	}
-	
 	/**
 	 * Eine Methode, welche erstellt wurde, um eine Masse von Code in der movePossibilitie zu sparen.
 	 * @param posX die aktuelle X-Position
@@ -716,7 +587,6 @@ class Schachbrett {
 				
 			}
 			
-			
 			//vorne links/rechts ein schwarzer/weißer Gegner
 			if(x-1 != -1){
 				int possibleEnemy = this.felder[x-1][y+varY].getBelegung();
@@ -750,6 +620,134 @@ class Schachbrett {
 			}
 		}
 		return moveP;
+	}
+
+	/**
+	 * eine uebergebene Liste wird gefiltert, damit keine schacherzeugenden Bewegungen
+	 * mehr vorhanden sind
+	 * @param moves die zu filternde Bewegungsliste
+	 * @param iW die Teamfarbe der Figur
+	 * @return die gefilterte 
+	 */
+	public List<Point2D> filter(List<Point2D> moves, Boolean iW){
+		
+		Point2D realPos = posSelectedFig;
+		
+		int origBelegung;
+		
+		Boolean remove;
+		
+		//es wird von oben runtergezaehlt, um beim Entfernen keine Indexprobleme zu erzeugen
+		for(int i = moves.size()-1; i >= 0; i--){
+			remove = false;
+			origBelegung = felder[(int)moves.get(i).getX()][(int)moves.get(i).getY()].getBelegung();
+			felder[(int)moves.get(i).getX()][(int)moves.get(i).getY()].clear();
+			
+			changePos(moves.get(i));
+			if(this.Schach(iW)){
+				remove = true;
+			}
+			changePos(realPos);
+			felder[(int)moves.get(i).getX()][(int)moves.get(i).getY()].addFigur(origBelegung);
+			if(remove)
+				moves.remove(i);
+		}
+	
+		return moves;	
+	}
+
+	/**
+	 * Die jeweils gegnerischen FIguren werden ermittelt.
+	 * Diese werden hinsichtlich ihrer Bewegungsmoeglichkeiten analysiert,
+	 * ob sie die Position des jeweils gegnerischen Kings beinhalten.
+	 * @param isW welches Team ist im Schach
+	 * @return ob das jeweilige Team im Schach ist
+	 */
+	public Boolean Schach(Boolean isW){
+		
+		int gegnerStart, gegnerMax, myKingIndex;
+		
+		if(isW){
+			gegnerStart = 16;
+			gegnerMax = 31;
+			myKingIndex = 14;
+		}
+		else{
+			gegnerStart = 0;
+			gegnerMax = 15;
+			myKingIndex = 30;
+		}
+		
+		Point2D origCoord = posSelectedFig;
+		Point2D kingCoord = searchFigCoordByIndex(myKingIndex);
+		
+		for(int i = gegnerStart; i <= gegnerMax; i++){
+			Point2D curCoord = searchFigCoordByIndex(i);
+			if(curCoord.getX() == 100000)
+				continue;
+			selectFigur(curCoord);
+			
+			if(movePossibilities().contains(kingCoord)){
+				selectFigur(origCoord);
+				return true;
+			}
+		}
+		
+		selectFigur(origCoord);
+		return false;
+	}
+
+	/**
+	 * Wenn das ausgewaehlte Team sich mit keiner Figur bewegen kann.
+	 * Dazu wird fuer jedes Teammitglied eine Analyse der Bewegungsmoeglichkeiten
+	 * aufgestellt, welche im Pattfall alle nicht vorhanden sind.
+	 * @param isW welches Team ist im Patt
+	 * @return ob das jeweilige Team im Patt ist
+	 */
+	public Boolean Patt(Boolean isW){
+		
+		int teamStart, teamMax;
+		
+		if(isW){
+			teamStart = 0;
+			teamMax = 15;
+		}
+		else{
+			teamStart = 16;
+			teamMax = 31;
+		}
+		
+		for(int i = teamStart; i <= teamMax; i++){
+			Point2D curCoord = searchFigCoordByIndex(i);
+			if(curCoord.getX() == 100000)
+				continue;
+				
+			selectFigur(curCoord);
+			if(filter(movePossibilities(), isW).size() != 0){
+				return false;
+			}
+		}
+		return true;	
+	}
+
+	/**
+	 * Wenn das ausgewaehlte Team im Schach steht und einem Patt unterliegt.
+	 * @param isW welches Team im SchachMatt steht
+	 * @return ob das jeweilige Team im SchachMatt steht
+	 */
+	public Boolean SchachMatt(Boolean isW){
+		
+		Boolean teamCheck;
+		
+		if(isW)
+			teamCheck = whiteCheck;
+		else
+			teamCheck = blackCheck;
+		
+		if(teamCheck && Patt(isW))
+			return true;
+		
+		return false;
 	}
 	
 	}

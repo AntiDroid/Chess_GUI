@@ -12,6 +12,7 @@ class UI {
 	Boolean abort = false;
 	Player p;
 	int figMax, figMin;
+	Scanner scan;
 	
 	public static void main(String[] args) {	
 		UI ui = new UI();
@@ -28,7 +29,7 @@ class UI {
 	 */
 	void buildUI() throws IOException{
 		
-		Scanner scan = new Scanner(System.in);
+		scan = new Scanner(System.in);
 		System.out.println("The first players name(white) =");
 		Player p1 = new Player(scan.next(), true);
 		System.out.println("The second players name(black) =");
