@@ -130,11 +130,20 @@ class UI {
 			break;
 		}
 		else if(g1.brett.Patt(!whiteTurn)){
-			g1.Draw(!whiteTurn);
+			g1.Draw();
+			if(p.equals(p1))
+				System.out.println("\n\nPlayer "+p2.getName()+"'s king can't move!");
+			else
+				System.out.println("\n\nPlayer "+p1.getName()+"'s king can't move!");
 			break;
 		}     
 		else if(g1.brett.Patt(whiteTurn)){
-			g1.Draw(whiteTurn);
+			g1.Draw();
+			System.out.println("\n\nPlayer "+p.getName()+"'s king can't move!");
+			break;
+		}
+		else if(g1.brett.king1v1()){
+			g1.Draw();
 			break;
 		}
 		

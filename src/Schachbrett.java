@@ -697,6 +697,21 @@ class Schachbrett {
 		return false;
 	}
 
+	public Boolean king1v1(){
+		
+		int counter = 0;
+		
+		for(int i = 0; i < Fig.length; i++){
+			if(searchFigCoordByIndex(i).getX() != 100000)
+				counter++;
+		}
+		if(counter == 2)
+			return true;
+		
+		return false;
+	}
+	
+	
 	/**
 	 * Wenn das ausgewaehlte Team sich mit keiner Figur bewegen kann.
 	 * Dazu wird fuer jedes Teammitglied eine Analyse der Bewegungsmoeglichkeiten

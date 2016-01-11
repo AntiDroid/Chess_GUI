@@ -50,20 +50,10 @@ class Game {
 	 * Unentschieden, welches (aktuell) nur in dem Fall eines Patts anerkannt wird.
 	 * @param isWhite Welche Figur einen Draw ausloest
 	 */
-	public void Draw(Boolean isWhite) {
-		
-		Player draw;
-		
-		if(p1.getIsWhite() == isWhite)
-			draw = p1;
-		else
-			draw = p2;
+	public void Draw() {
 		
 		consolePrint();
-		
-		System.out.println();
-		System.out.println();
-		System.out.println("Player "+draw.getName()+"'s king can't move!");
+
 		System.out.println("DRAW");
 		
 	}
