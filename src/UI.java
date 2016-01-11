@@ -141,7 +141,7 @@ class UI {
 		
 		}while(true);
 		
-		System.out.println("-----Bye----");
+		System.out.println("-----Bye-----");
 		scan.close();
 	}
 
