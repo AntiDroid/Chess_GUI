@@ -505,6 +505,7 @@ class Schachbrett {
 		
 		Boolean remove;
 		
+		//es wird von oben runtergezaehlt, um beim Entfernen keine Indexprobleme zu erzeugen
 		for(int i = moves.size()-1; i >= 0; i--){
 			remove = false;
 			origBelegung = felder[(int)moves.get(i).getX()][(int)moves.get(i).getY()].getBelegung();

@@ -73,12 +73,6 @@ class Game {
 	 */
 	public void consolePrint(){
 		
-		String check = "";
-		
-		if(this.brett.getBlackChecK()){
-			check = "    ****Check****    ";
-		}
-		
 		for(int i = 0; i < 10; i++){
 			System.out.println();
 		}
@@ -90,9 +84,11 @@ class Game {
 		System.out.print("R - Rook(Turm)");
 		System.out.print("\t\tJ - Knight(Springer)\n");
 		
-		System.out.println("\n--black--  Name: "+p2.getName()+check);
-		System.out.println("");
-		System.out.println("        A  B  C  D  E  F  G  H\n");
+		System.out.println("\n--black--  Name: "+p2.getName());
+		if(brett.getBlackChecK())
+			System.out.print("\n    ****CHECK****    \n");
+		
+		System.out.println("\n        A  B  C  D  E  F  G  H\n");
 		for(int y = 0; y < 8; y++){
 			System.out.print("   "+(8-y)+"   ");
 			for(int x = 0; x < 8; x++){	
@@ -143,14 +139,9 @@ class Game {
 			
 		}
 		
-		check = "";
-		
-		if(this.brett.getWhiteChecK()){
-			check = "    ****Check****    ";
-		}
-		
-		System.out.println();
-		System.out.println("--WHITE--  Name: "+p1.getName()+check);
+		System.out.println("\n--WHITE--  Name: "+p1.getName());
+		if(brett.getWhiteChecK())
+			System.out.print("\n    ****CHECK****    \n");
 		System.out.println();
 	}
 
