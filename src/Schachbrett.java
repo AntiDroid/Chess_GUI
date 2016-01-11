@@ -399,14 +399,16 @@ class Schachbrett {
 			((Pawn)Fig[selectedFig]).setDoublemove(false);
 			
 		}
-		if(gegner != 99){
-			if(Fig[gegner] instanceof Rook){
-				((Rook)Fig[gegner]).setRochade(false);
-			}
-		}
+
 		//Wenn auf dem Endfeld einer drauf ist, weghaun!
 		if(gegner != Field.emptyField){
 			hit(searchFigCoordByIndex(gegner));
+			
+			//falls der Turm auf der Startposition beseitigt wird
+			//Rochade muss entfernt werden
+			if(Fig[gegner] instanceof Rook){
+				((Rook)Fig[gegner]).setRochade(false);
+			}
 		}
 		
 		//Bauernumwandlung
@@ -527,13 +529,8 @@ class Schachbrett {
 	 */
 	public void changePos(Point2D pos){
 		
-		int xNow = (int)posSelectedFig.getX();
-		int yNow = (int)posSelectedFig.getY();
-		int xGo = (int)pos.getX();
-		int yGo = (int)pos.getY();
-		
-		felder[xNow][yNow].clear();
-		felder[xGo][yGo].addFigur(selectedFig);
+		felder[(int)posSelectedFig.getX()][(int)posSelectedFig.getY()].clear();
+		felder[(int)pos.getX()][(int)pos.getY()].addFigur(selectedFig);
 		
 		selectFigur(pos);
 	}
@@ -551,7 +548,7 @@ class Schachbrett {
 					return f.getKoordinate();
 			}
 		}
-		return new Point2D(100000, 10000);
+		return new Point2D(100000, 100000);
 	}
 	
 	/**
@@ -652,7 +649,7 @@ class Schachbrett {
 		}
 		else if(this.Fig[selectedFig] instanceof King){
 			
-			int moveVarX, rochRookL, rochRookR;
+			int rochRookL, rochRookR;
 			
 			if(Fig[selectedFig].getIW()){
 				rochRookL = 0;
@@ -684,12 +681,14 @@ class Schachbrett {
 			moveP.addAll(moveCrap(x, y, 1, 1, x+2, y+2));
 			
 			
-			//Rochade			
+			//Rochade		
+			//rechts
 			if( ((King)Fig[selectedFig]).getRochade() && ((Rook)Fig[rochRookR]).getRochade() ){
 				if((this.felder[(x+2)][y].getBelegung() == Field.emptyField) && this.felder[(x+1)][y].getBelegung() == Field.emptyField){
 					moveP.add(new Point2D((x+2), y));
 				}
 			}
+			//links
 			if( ((King)Fig[selectedFig]).getRochade() && ((Rook)Fig[rochRookL]).getRochade() ){
 				if((this.felder[(x-3)][y].getBelegung() == Field.emptyField) && (this.felder[(x-2)][y].getBelegung() == Field.emptyField) && (this.felder[(x-1)][y].getBelegung() == Field.emptyField)){
 					moveP.add(new Point2D((x-2), y));
@@ -732,6 +731,7 @@ class Schachbrett {
 							moveP.addAll(moveCrap(x, y+varY, -1, 0, x-2, 10));	
 				}
 			}
+			
 			//vorne rechts/links ein schwarzer/weißer Gegner
 			if(x+1 != 8){
 				int possibleEnemy = this.felder[x+1][y+varY].getBelegung();
