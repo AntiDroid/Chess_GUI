@@ -115,7 +115,9 @@ class UI {
 					str = "";
 				
 			}while(str == "");		
-			
+		
+		//initiate the move process 
+		//(special things like check or pawn promotion are being generated here)
 		g1.brett.move(liste.get(input-1));	
 		
 		if(g1.brett.SchachMatt(!whiteTurn)){

@@ -593,6 +593,8 @@ public class Schachbrett {
 					if(Fig[possibleEnemy].getIW() != Fig[selectedFig].getIW())
 						moveP.addAll(moveCrap(x, y+varY, -1, 0, x-2, 10));
 				}
+				
+				//En Passant
 				possibleEnemy = this.felder[x-1][y].getBelegung();
 				if(possibleEnemy != Field.emptyField){
 					if(Fig[possibleEnemy].getIW() != Fig[selectedFig].getIW() && Fig[possibleEnemy] instanceof Pawn)
@@ -609,6 +611,8 @@ public class Schachbrett {
 					if(Fig[possibleEnemy].getIW() != Fig[selectedFig].getIW())
 						moveP.addAll(moveCrap(x, y, 1, varY, x+2, y+2));
 				}
+				
+				//En Passant
 				possibleEnemy = this.felder[x+1][y].getBelegung();
 				if(possibleEnemy != Field.emptyField){
 					if(Fig[possibleEnemy].getIW() != Fig[selectedFig].getIW() && Fig[possibleEnemy] instanceof Pawn)
