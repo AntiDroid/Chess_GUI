@@ -1,6 +1,4 @@
 package figures;
-import java.io.IOException;
-
 import javafx.geometry.Point2D;
 
 
@@ -11,7 +9,7 @@ public class King extends Figure {
 	/**
 	 * Rochade ist am Anfang true. Dieser Werte wird in der move-Methode veraendert.
 	 */
-	public King(Boolean iW, Point2D sP) throws IOException{
+	public King(Boolean iW, Point2D sP){
 		super(sP, iW, "Figurenbilder/King_", "King");
 		Rochade = true;
 	}

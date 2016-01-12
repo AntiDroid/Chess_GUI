@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -19,18 +18,13 @@ class UI {
 	
 	public static void main(String[] args) {	
 		UI ui = new UI();
-		try {
-			ui.buildUI();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		ui.buildUI();
 	}
 
 	/**
 	 * Spielverwaltung mit Benutzerinteraktionen
-	 * @throws IOException durch Weitergabe der Exceptions durch die Figurenbildereinlesungen
 	 */
-	void buildUI() throws IOException{
+	void buildUI(){
 		
 		scan = new Scanner(System.in);
 		System.out.println("Player 1(WHITE), Enter your name:");

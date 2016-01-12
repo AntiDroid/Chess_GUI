@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -29,10 +28,9 @@ class Schachbrett {
 	 * Bei der Initialisierung eines Schachbretts, wird das 8x8 Feld initialisiert 
 	 * und die global genutzten Eigenschaften der selected Figur auf Standardwerte gesetzt.
 	 * Die Felder bekommen hier auch ihre IDs und Farben (schwarz/weiss)
-	 * @throws IOException Durch die Methode buildFigures
 	 */
 	
-	public Schachbrett() throws IOException{
+	public Schachbrett(){
 		
 		this.felder = new Field[8][8];
 		selectedFig = 0;
@@ -79,9 +77,8 @@ class Schachbrett {
 	 * Die Figuren beider Teams werden erstellt,
 	 * dem jeweiligen Team zugewiesen und mit Startpositionen versehen. 
 	 * Anschließend werden die Positionen den Feldern per FigurenID zugewiesen.
-	 * @throws IOException durch die Figurenbilder, welche im Figur-Konstruktor eingelesen werden
 	 */
-	public void buildFigures() throws IOException{
+	public void buildFigures(){
 			
 			Fig = new Figure[32];
 			
@@ -245,8 +242,6 @@ class Schachbrett {
 			x = 5;
 		}
 		}while((x>4) && (x<1));
-		
-		try{
 			
 		switch(x){
 		
@@ -266,10 +261,7 @@ class Schachbrett {
 			break;
 		}
 		
-		}
-		catch(Exception e){
-			
-		}
+		
 		
 		Fig[selectedFig] = f;
 	}

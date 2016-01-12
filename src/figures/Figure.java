@@ -24,7 +24,7 @@ public abstract class Figure {
 	 * @param n Name der Figur
 	 * @throws IOException durch Bildereinlesevorgang
 	 */
-	public Figure(Point2D sP, Boolean isW, String fP, String n) throws IOException{
+	public Figure(Point2D sP, Boolean isW, String fP, String n){
 		
 		name = n;
 		
@@ -39,7 +39,14 @@ public abstract class Figure {
 		
 		this.startPosition = sP;
 		image = new JLabel();
-		//image.setIcon(new ImageIcon(ImageIO.read(new File(fP))));
+		
+		try{
+			image.setIcon(new ImageIcon(ImageIO.read(new File(fP))));
+		}
+		catch(IOException e){
+			System.out.println(fP+" couldn't be loaded");
+		}
+		
 		isWhite = isW;
 	}
 	

@@ -1,6 +1,4 @@
 package figures;
-import java.io.IOException;
-
 import javafx.geometry.Point2D;
 
 
@@ -12,7 +10,7 @@ public class Rook extends Figure {
 	 * Rochade ist am Anfang true. Dieser Wert wird dann in der 
 	 * move-Methode geaendert.
 	 */
-	public Rook(Boolean iW, Point2D sP) throws IOException{
+	public Rook(Boolean iW, Point2D sP){
 		super(sP, iW, "Figurenbilder/Rook_", "Rook");
 		setRochade(true);
 	}

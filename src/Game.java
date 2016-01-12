@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ class Game {
 	
 	private static List<Game> gameHistory = new ArrayList<Game>();
 	
-	public Game(Player p1, Player p2) throws IOException{
+	public Game(Player p1, Player p2){
 		
 		p = new Player[2];
 		p[0] = p1;
