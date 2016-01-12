@@ -28,9 +28,11 @@ class UI {
 	void buildUI(){
 		
 		scan = new Scanner(System.in);
-		System.out.println("Player 1(BLACK), Enter your name:");
+		System.out.println("(BLACK) Player 1, please enter your name:");
+		System.out.print("\t\t\t\t\t");
 		Player p1 = new Player(scan.next(), false);
-		System.out.println("Player 2(WHITE), Enter your name:");
+		System.out.println("(WHITE) Player 2, please enter your name:");
+		System.out.print("\t\t\t\t\t");
 		Player p2 = new Player(scan.next(), true);
 		
 		String str;
@@ -58,6 +60,7 @@ class UI {
 			System.out.println("It's your turn "+g1.getPlayer()[player].getName()+"!");
 			System.out.println("\nWhich figure should be moved?(A5, B2, A3, ...)");
 			System.out.println("(x to abort)");
+			System.out.print("\t\t");
 			str = scan.next().toUpperCase();
 			
 			if(str.equals("x")){
@@ -102,8 +105,10 @@ class UI {
 			
 			do{
 				
+				System.out.println("\nPossible moves:");
+				
 				for(int i = 0; i < liste.size(); i++){
-					System.out.println((i+1)+"\t"+g1.brett.RealToDisplayCoord(liste.get(i)));
+					System.out.println("\t"+(i+1)+"\t"+g1.brett.RealToDisplayCoord(liste.get(i)));
 				}
 				
 				System.out.println("\nChoose a position by entering its index!");
