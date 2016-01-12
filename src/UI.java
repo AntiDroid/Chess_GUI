@@ -13,6 +13,9 @@ class UI {
 	Player p;
 	int figMax, figMin;
 	Scanner scan;
+	Boolean[] threadStop = new Boolean[2];
+	int tSIndex = 0;;
+	int durDifference;
 	
 	public static void main(String[] args) {	
 		UI ui = new UI();
@@ -29,6 +32,9 @@ class UI {
 	 */
 	void buildUI() throws IOException{
 		
+		threadStop[0] = false;
+		threadStop[1] = false;
+		
 		scan = new Scanner(System.in);
 		System.out.println("The first players name(white) =");
 		Player p1 = new Player(scan.next(), true);
@@ -42,11 +48,13 @@ class UI {
 		do{
 			
 			if(whiteTurn){
+				tSIndex = 0;
 				p = p1;
 				figMax = 15;
 				figMin = 0;
 			}
 			else{
+				tSIndex = 1;
 				p = p2;
 				figMax = 31;
 				figMin = 16;
@@ -55,6 +63,31 @@ class UI {
 			g1.consolePrint();
 			
 			do{
+			
+			durDifference = p.getTimeSec();
+			threadStop[tSIndex] = true;	
+				
+			Thread t = new Thread() {
+			    public void run() {
+			    	int counter = 0;
+				    	
+			    	while(threadStop[tSIndex]){
+			    		try {
+			    			Thread.sleep(1);
+			    			counter++;
+			    		} catch (InterruptedException e) {
+			    			e.printStackTrace();
+			    		}
+			    		if(counter == 1000){
+			    			p.increaseTimeSec();
+				   			counter = 0;
+				   		}
+				   	}
+			    }
+			};
+				
+			t.start();
+				
 			System.out.println("It's your turn "+p.getName()+"!");
 			System.out.println("\nWhich figure should be moved?(A5, B2, A3, ...)");
 			System.out.println("(x to abort)");
@@ -106,8 +139,7 @@ class UI {
 					System.out.println((i+1)+"\t"+g1.brett.RealToDisplayCoord(liste.get(i)));
 				}
 				
-				System.out.println();
-				System.out.println("Choose a position by entering its index!");
+				System.out.println("\nChoose a position by entering its index!");
 				str = scan.next();
 				
 				try{
@@ -145,7 +177,8 @@ class UI {
 			g1.Draw();
 			break;
 		}
-		
+		threadStop[tSIndex] = false;
+		System.out.println("You spent "+(p.getTimeSec()-durDifference)+" seconds!");
 		whiteTurn = !whiteTurn;
 		
 		}while(true);

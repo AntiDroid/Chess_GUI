@@ -15,6 +15,7 @@ class Game {
 	public Schachbrett brett;
 	private Player winner;
 	private Player p1, p2;
+	private int totalGameDur;
 	
 	private static List<Game> gameHistory = new ArrayList<Game>();
 	
@@ -23,6 +24,7 @@ class Game {
 		this.p1 = p1;
 		this.p2 = p2;
 		winner = null;
+		totalGameDur = 0;
 		this.brett = new Schachbrett();
 	}
 	
@@ -38,11 +40,9 @@ class Game {
 		
 		consolePrint();
 		
-		System.out.println();
-		System.out.println();
-		System.out.println("Player "+winner.getName()+" has won!");
+		System.out.println("\n\nPlayer "+winner.getName()+" has won!");
 		System.out.println("The enemy king can't move!");
-		
+		totalGameDur = p1.getTimeSec()+p2.getTimeSec();
 		gameHistory.add(this);
 	}
 	
@@ -55,7 +55,8 @@ class Game {
 		consolePrint();
 
 		System.out.println("DRAW");
-		
+		totalGameDur = p1.getTimeSec()+p2.getTimeSec();
+		gameHistory.add(this);
 	}
 	
 	/**

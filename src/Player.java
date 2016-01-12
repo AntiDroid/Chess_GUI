@@ -19,9 +19,11 @@ class Player {
 		return isWhite;
 	}
 	
-	public void increaseTimeSec() throws InterruptedException{
-		//nicht in Verwendung
+	public int getTimeSec(){
+		return timeSec;
+	}
+	
+	public void increaseTimeSec(){
 		timeSec++;
-		Thread.sleep(timeSec);
 	}
 }
