@@ -12,7 +12,7 @@ import figures.Queen;
 import figures.Rook;
 import javafx.geometry.Point2D;
 
-class Schachbrett {
+public class Schachbrett {
 	
 	private Field[][] felder;
 	private Figure[] Fig;
@@ -214,7 +214,7 @@ class Schachbrett {
 	 * @param p vom Programm lesbare Koordinate
 	 * @return die bearbeitbare Version der Koordinate
 	 */
-	public String RealToDisplayCoord(Point2D p){
+	public String realToDisplayCoord(Point2D p){
 		String str = "";
 		
 		str += ((char)(p.getX()+65));
@@ -576,7 +576,6 @@ class Schachbrett {
 			//normal vor
 			if(this.felder[x][y+varY].getBelegung() == Field.emptyField){
 				moveP.add(new Point2D(x, y+varY));
-				
 				//Doppelzug
 				if((((Pawn)Fig[selectedFig]).getDoublemove()) && (this.felder[x][y+(2*varY)].getBelegung() == Field.emptyField)){
 					moveP.add(new Point2D(x, y+(2*varY)));

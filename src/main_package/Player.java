@@ -1,7 +1,7 @@
 package main_package;
 
 
-class Player {
+public class Player {
 
 	private int timeSec;
 	private String name;

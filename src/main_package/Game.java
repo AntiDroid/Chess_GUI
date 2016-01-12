@@ -10,7 +10,7 @@ import figures.Queen;
 import figures.Rook;
 
 
-class Game {
+public class Game {
 
 	public Schachbrett brett;
 	private int winner;

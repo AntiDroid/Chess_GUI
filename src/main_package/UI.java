@@ -98,7 +98,7 @@ class UI {
 				System.out.println("\nPossible moves:");
 				
 				for(int i = 0; i < liste.size(); i++){
-					System.out.println("\t"+(i+1)+"\t"+g1.brett.RealToDisplayCoord(liste.get(i)));
+					System.out.println("\t"+(i+1)+"\t"+g1.brett.realToDisplayCoord(liste.get(i)));
 				}
 				
 				System.out.println("\nChoose a position by entering its index!");

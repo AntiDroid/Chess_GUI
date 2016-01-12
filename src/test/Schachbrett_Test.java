@@ -1,27 +1,27 @@
 package test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import javafx.geometry.Point2D;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class Schachbrett_Test {
-	
-	String fieldInput;
+import main_package.*;
 
+public class Schachbrett_Test {
+
+	private Game g;
+	private String testStr;
+	
 	@Before
 	public void setUp() throws Exception {
-		fieldInput = "A5";
-
+		g = new Game(new Player("Talip", true), new Player("Luise", false));
+		testStr = "A6";
 	}
 
 	@Test
-	public void TestRealTDisplayC() {
-		assertTrue(false);
-	}
-	@Test
-	public void TestDisplayCTReal() {
-		assertTrue(false);
+	public void testCoordConversion() {
+		assertTrue(g.brett.realToDisplayCoord(g.brett.displayCoordToReal(testStr)).equals("A6"));
 	}
 
 }
