@@ -407,34 +407,18 @@ class Schachbrett {
 		changePos(p);
 		
 		Boolean checkedOne = !Fig[selectedFig].getIW();
-		//check if the enemy is in check
-		if(Schach(checkedOne)){
-			if(checkedOne)
-				whiteCheck = true;
-			else
-				blackCheck = true;
-		}
-		else{
-			if(checkedOne)
-				whiteCheck = false;
-			else
-				blackCheck = false;
-		}
 		
-		checkedOne = Fig[selectedFig].getIW();
+		//check if the enemy is in check
+		if(checkedOne)
+			whiteCheck = Schach(checkedOne);
+		else if(!checkedOne)
+			blackCheck = Schach(checkedOne);
+		
 		//check if you escaped from a check
-		if(Schach(checkedOne)){
-			if(checkedOne)
-				whiteCheck = true;
-			else
-				blackCheck = true;
-		}
-		else{
-			if(checkedOne)
-				whiteCheck = false;
-			else
-				blackCheck = false;
-		}
+		if(!checkedOne)
+			whiteCheck = Schach(!checkedOne);
+		else if(checkedOne)
+			blackCheck = Schach(!checkedOne);
 	}
 
 	/**
