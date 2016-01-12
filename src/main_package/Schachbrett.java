@@ -167,6 +167,7 @@ public class Schachbrett {
 			posSelectedFig = coord;
 			return true;
 		}
+		//falls keine Figur ausgewaehlt werden konnte
 		return false;
 	}
 	
@@ -203,6 +204,7 @@ public class Schachbrett {
 	public Point2D displayCoordToReal(String koord){
 		int x, y;
 	
+		//siehe ASCI Tabelle
 		x = ((int)koord.charAt(0)) - 65; 
 		y = 7-(((int)koord.charAt(1)) - 49);
 		
@@ -217,6 +219,7 @@ public class Schachbrett {
 	public String realToDisplayCoord(Point2D p){
 		String str = "";
 		
+		//siehe ASCI Tabelle
 		str += ((char)(p.getX()+65));
 		str += ((char)(56 - p.getY()));
 		 
@@ -267,8 +270,7 @@ public class Schachbrett {
 			break;
 		}
 		
-		
-		
+		//die neue Figur mit der selben ID des Bauern speichern
 		Fig[selectedFig] = f;
 	}
 
@@ -691,14 +693,22 @@ public class Schachbrett {
 		return false;
 	}
 
+	/**
+	 * Diese Methode dient dazu den seltenen, aber dennoch
+	 * automatisiert bearbeitbaren, Fall eines King vs King
+	 * zu ermitteln und beim Aufruf der Methode ein Remis auszuloesen
+	 * @return ob ein King vs King vorliegt
+	 */
 	public Boolean king1v1(){
 		
 		int counter = 0;
 		
+		//Zaehle die Anzahl der noch aktiven Spielfiguren
 		for(int i = 0; i < Fig.length; i++){
 			if(!searchFigCoordByIndex(i).equals(nonSelectable))
 				counter++;
 		}
+		//es koennen nur noch zwei Figuren uebrig bleiben, wenn diese Koenige sind
 		if(counter == 2)
 			return true;
 		
