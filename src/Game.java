@@ -12,7 +12,7 @@ import figures.Rook;
 class Game {
 
 	public Schachbrett brett;
-	private Player winner;
+	private int winner;
 	private Player[] p;
 	private int totalGameDur;
 	
@@ -23,7 +23,7 @@ class Game {
 		p = new Player[2];
 		p[0] = p1;
 		p[1] = p2;
-		winner = null;
+		winner = 10;
 		totalGameDur = 0;
 		this.brett = new Schachbrett();
 	}
@@ -38,13 +38,13 @@ class Game {
 	 */
 	public void Win(Boolean isWhite){
 		if(p[1].getIsWhite() == isWhite)
-			winner = p[1];
+			winner = 0;
 		else
-			winner = p[2];
+			winner = 1;
 		
 		consolePrint();
 		
-		System.out.println("\n\nPlayer "+winner.getName()+" has won!");
+		System.out.println("\n\nPlayer "+p[winner].getName()+" has won!");
 		System.out.println("The enemy king can't move!");
 		totalGameDur = p[1].getTimeSec()+p[2].getTimeSec();
 		gameHistory.add(this);
@@ -140,5 +140,12 @@ class Game {
 		System.out.println();
 	}
 
-	
+	public String toString(){
+		String str = p[0].getName()+" vs " + p[1].getName()+"\n*************\n";
+		if(winner != 10)
+			str += p[winner].getName()+" won\n*************\n";
+		str += "The game took"+Math.round((double)totalGameDur/60.0)+"seconds!\n\n";
+		
+		return str;
+	}
 }
