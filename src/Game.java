@@ -51,8 +51,7 @@ class Game {
 	}
 	
 	/**
-	 * Unentschieden, welches (aktuell) nur in dem Fall eines Patts anerkannt wird.
-	 * @param isWhite Welche Figur einen Draw ausloest
+	 * Unentschieden durch Patt oder 1v1 King Situationen automatisch aufgerufen.
 	 */
 	public void Draw() {
 		
@@ -140,6 +139,9 @@ class Game {
 		System.out.println();
 	}
 
+	/**
+	 * Ausgabemethode eines einzelnen Spieles
+	 */
 	public String toString(){
 		String str = p[0].getName()+" vs " + p[1].getName()+"\n*************\n";
 		if(winner != 10)

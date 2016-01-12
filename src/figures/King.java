@@ -8,6 +8,8 @@ public class King extends Figure {
 	
 	/**
 	 * Rochade ist am Anfang true. Dieser Werte wird in der move-Methode veraendert.
+	 * @param sP Startposition der Figur
+	 * @param iW Teamfarbe
 	 */
 	public King(Boolean iW, Point2D sP){
 		super(sP, iW, "Figurenbilder/King_", "King");

@@ -156,7 +156,7 @@ class Schachbrett {
 
 	/**
 	 * eine bestimmte Figur wird als selektierte Figur gespeichert
-	 * @param koord das Selektieren einer Figur wird anhand der Koordinate auf 
+	 * @param coord das Selektieren einer Figur wird anhand der Koordinate auf 
 	 * der sie steht abgewickelt
 	 * @return ob der Vorgang erfolgreich war
 	 */
@@ -185,6 +185,11 @@ class Schachbrett {
 		return nonSelectable;
 	}
 	
+	/**
+	 * Anhand der Koordinate wird die FigurenID bestimmt
+	 * @param coord	Koordinate der gesuchten Figur
+	 * @return Index der gesuchten Figur
+	 */
 	public int searchFigIndexByCoord(Point2D coord){
 		return felder[(int)coord.getX()][(int)coord.getY()].getBelegung();
 	}
@@ -205,7 +210,7 @@ class Schachbrett {
 	
 	/**
 	 * die vom Programm lesbare Koordinate wird in die vom Nutzer verstaendliche umgewandelt
-	 * @param vom Programm lesbare Koordinate
+	 * @param p vom Programm lesbare Koordinate
 	 * @return die bearbeitbare Version der Koordinate
 	 */
 	public String RealToDisplayCoord(Point2D p){

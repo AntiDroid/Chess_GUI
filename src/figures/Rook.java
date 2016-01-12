@@ -9,6 +9,8 @@ public class Rook extends Figure {
 	/**
 	 * Rochade ist am Anfang true. Dieser Wert wird dann in der 
 	 * move-Methode geaendert.
+	 * @param sP Startposition der Figur
+	 * @param iW Teamfarbe
 	 */
 	public Rook(Boolean iW, Point2D sP){
 		super(sP, iW, "Figurenbilder/Rook_", "Rook");

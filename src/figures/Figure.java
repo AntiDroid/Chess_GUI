@@ -22,7 +22,6 @@ public abstract class Figure {
 	 * @param isW Teamfarbe
 	 * @param fP filePath des Figurenbildes
 	 * @param n Name der Figur
-	 * @throws IOException durch Bildereinlesevorgang
 	 */
 	public Figure(Point2D sP, Boolean isW, String fP, String n){
 		
