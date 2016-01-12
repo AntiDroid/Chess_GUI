@@ -1,3 +1,4 @@
+package main_package;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -405,15 +406,31 @@ class Schachbrett {
 		
 		changePos(p);
 		
+		Boolean checkedOne = !Fig[selectedFig].getIW();
 		//check if the enemy is in check
-		if(Schach(!Fig[selectedFig].getIW())){
-			if(!Fig[selectedFig].getIW())
+		if(Schach(checkedOne)){
+			if(checkedOne)
 				whiteCheck = true;
 			else
 				blackCheck = true;
 		}
 		else{
-			if(!Fig[selectedFig].getIW())
+			if(checkedOne)
+				whiteCheck = false;
+			else
+				blackCheck = false;
+		}
+		
+		checkedOne = Fig[selectedFig].getIW();
+		//check if you escaped from a check
+		if(Schach(checkedOne)){
+			if(checkedOne)
+				whiteCheck = true;
+			else
+				blackCheck = true;
+		}
+		else{
+			if(checkedOne)
 				whiteCheck = false;
 			else
 				blackCheck = false;

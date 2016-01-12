@@ -1,3 +1,4 @@
+package main_package;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -27,10 +28,10 @@ class UI {
 	void buildUI(){
 		
 		scan = new Scanner(System.in);
-		System.out.println("Player 1(WHITE), Enter your name:");
-		Player p1 = new Player(scan.next(), true);
-		System.out.println("Player 2(BLACK), Enter your name:");
-		Player p2 = new Player(scan.next(), false);
+		System.out.println("Player 1(BLACK), Enter your name:");
+		Player p1 = new Player(scan.next(), false);
+		System.out.println("Player 2(WHITE), Enter your name:");
+		Player p2 = new Player(scan.next(), true);
 		
 		String str;
 		List<Point2D> liste = new ArrayList<Point2D>();
@@ -39,12 +40,12 @@ class UI {
 		do{
 			
 			if(whiteTurn){ 
-				player = 0;
+				player = 1;
 				figMax = 15;
 				figMin = 0;
 			}
 			else{
-				player = 1;
+				player = 0;
 				figMax = 31;
 				figMin = 16;
 			}

@@ -1,3 +1,4 @@
+package main_package;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +59,7 @@ class Game {
 		consolePrint();
 
 		System.out.println("DRAW");
-		totalGameDur = p[1].getTimeSec()+p[2].getTimeSec();
+		totalGameDur = p[1].getTimeSec()+p[0].getTimeSec();
 		gameHistory.add(this);
 	}
 	
@@ -78,7 +79,7 @@ class Game {
 		System.out.print("R - Rook(Turm)");
 		System.out.print("\t\tJ - Knight(Springer)\n");
 		
-		System.out.println("\n--black--  Name: "+p[1].getName());
+		System.out.println("\n--black--  Name: "+p[0].getName());
 		if(brett.getBlackChecK())
 			System.out.print("\n    ****CHECK****    \n");
 		
