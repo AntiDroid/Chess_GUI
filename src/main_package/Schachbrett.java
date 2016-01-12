@@ -662,23 +662,21 @@ class Schachbrett {
 	 */
 	public Boolean Schach(Boolean isW){
 		
-		int gegnerStart, gegnerMax, myKingIndex;
+		int gegnerStart, myKingIndex;
 		
 		if(isW){
 			gegnerStart = 16;
-			gegnerMax = 31;
 			myKingIndex = 14;
 		}
 		else{
 			gegnerStart = 0;
-			gegnerMax = 15;
 			myKingIndex = 30;
 		}
 		
 		Point2D origCoord = posSelectedFig;
 		Point2D kingCoord = searchFigCoordByIndex(myKingIndex);
 		
-		for(int i = gegnerStart; i <= gegnerMax; i++){
+		for(int i = gegnerStart; i <= (gegnerStart+15); i++){
 			Point2D curCoord = searchFigCoordByIndex(i);
 			if(curCoord.equals(nonSelectable))
 				continue;
@@ -718,18 +716,16 @@ class Schachbrett {
 	 */
 	public Boolean Patt(Boolean isW){
 		
-		int teamStart, teamMax;
+		int teamStart;
 		
 		if(isW){
 			teamStart = 0;
-			teamMax = 15;
 		}
 		else{
 			teamStart = 16;
-			teamMax = 31;
 		}
 		
-		for(int i = teamStart; i <= teamMax; i++){
+		for(int i = teamStart; i <= (teamStart+15); i++){
 			Point2D curCoord = searchFigCoordByIndex(i);
 			if(curCoord.equals(nonSelectable))
 				continue;

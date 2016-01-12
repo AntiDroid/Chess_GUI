@@ -49,7 +49,6 @@ class UI {
 			
 			do{
 				
-				
 			System.out.println("It's your turn "+g1.getPlayer()[player].getName()+"!");
 			System.out.println("\nWhich figure should be moved?(A5, B2, A3, ...)");
 			System.out.println("(x to abort)");
@@ -87,9 +86,7 @@ class UI {
 				}
 			}
 			}while(str.length() != 2);
-			
-			
-			
+		
 			if(abort){
 				break;
 			}
@@ -144,7 +141,6 @@ class UI {
 		}
 		
 		whiteTurn = !whiteTurn;
-		
 		}while(true);
 		
 		System.out.println("-----Bye-----");
