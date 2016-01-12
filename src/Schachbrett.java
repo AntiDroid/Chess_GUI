@@ -15,13 +15,15 @@ import javafx.geometry.Point2D;
 class Schachbrett {
 	
 	private Field[][] felder;
-	protected Figure[] Fig;
+	private Figure[] Fig;
 	
 	private int selectedFig;
 	private Point2D posSelectedFig;
 	
 	private Boolean whiteCheck;
 	private Boolean blackCheck;
+	
+	static private final Point2D nonSelectable = new Point2D(100000, 100000);
 	
 	/**
 	 * Bei der Initialisierung eines Schachbretts, wird das 8x8 Feld initialisiert 
@@ -37,7 +39,6 @@ class Schachbrett {
 		posSelectedFig = new Point2D(10,10);
 		
 		Boolean white = true;;
-		
 		//Koordinatensystem - von Oben/Links nach Unten/Rechts
 		for(int i = 0; i<8; i++){
 			for(int j = 0; j<8; j++){
@@ -51,6 +52,10 @@ class Schachbrett {
 		blackCheck = false;
 		
 		buildFigures();
+	}
+	
+	public Figure[] getFigures(){
+		return Fig;
 	}
 	
 	public int getSelFig(){
@@ -80,37 +85,37 @@ class Schachbrett {
 			
 			Fig = new Figure[32];
 			
-			//Figur name LINKS/RECHTS SCHWARZ/WEISS
+			//Figur name LEFT/RIGHT BLACK/WHITE
 			Figure rookLW = new Rook(true, new Point2D(0, 7));
 			Figure rookRW = new Rook(true, new Point2D(7, 7));
 			Fig[0] = rookLW;
 			Fig[1] = rookRW;
-			Figure rookLS = new Rook(false, new Point2D(0, 0));
-			Figure rookRS = new Rook(false, new Point2D(7, 0));
-			Fig[16] = rookLS;
-			Fig[17] = rookRS;
+			Figure rookLB = new Rook(false, new Point2D(0, 0));
+			Figure rookRB = new Rook(false, new Point2D(7, 0));
+			Fig[16] = rookLB;
+			Fig[17] = rookRB;
 			
 			Figure knightLW = new Knight(true, new Point2D(1, 7));
 			Figure knightRW = new Knight(true, new Point2D(6, 7));
 			Fig[2] = knightLW;
 			Fig[3] = knightRW;
-			Figure knightLS = new Knight(false, new Point2D(1, 0));
-			Figure knightRS = new Knight(false, new Point2D(6, 0));
-			Fig[18] = knightLS;
-			Fig[19] = knightRS;
+			Figure knightLB = new Knight(false, new Point2D(1, 0));
+			Figure knightRB = new Knight(false, new Point2D(6, 0));
+			Fig[18] = knightLB;
+			Fig[19] = knightRB;
 			
 			Figure bishopLW = new Bishop(true, new Point2D(2, 7));
 			Figure bishopRW = new Bishop(true, new Point2D(5, 7));
 			Fig[4] = bishopLW;
 			Fig[5] = bishopRW;
-			Figure bishopLS = new Bishop(false, new Point2D(2, 0));
-			Figure bishopRS = new Bishop(false, new Point2D(5, 0));
-			Fig[20] = bishopLS;
-			Fig[21] = bishopRS;
+			Figure bishopLB = new Bishop(false, new Point2D(2, 0));
+			Figure bishopRB = new Bishop(false, new Point2D(5, 0));
+			Fig[20] = bishopLB;
+			Fig[21] = bishopRB;
 					
 					
-			//von links nach rechts 
-			//WHITE
+			//left to right
+			//BLACK
 			Fig[6] = new Pawn(true, new Point2D(0, 6));
 			Fig[7] = new Pawn(true, new Point2D(1, 6));
 			Fig[8] = new Pawn(true, new Point2D(2, 6));
@@ -132,14 +137,14 @@ class Schachbrett {
 			
 			
 			Figure kingW = new King(true, new Point2D(4, 7));
-			Figure kingS = new King(false, new Point2D(4, 0));
+			Figure kingB = new King(false, new Point2D(4, 0));
 			Fig[14] = kingW;
-			Fig[30] = kingS;
+			Fig[30] = kingB;
 			
 			Figure queenW = new Queen(true, new Point2D(3, 7));
-			Figure queenS = new Queen(false, new Point2D(3, 0));
+			Figure queenB = new Queen(false, new Point2D(3, 0));
 			Fig[15] = queenW;
-			Fig[31] = queenS;
+			Fig[31] = queenB;
 			
 			for(int x = 0; x < Fig.length; x++){
 				for(Field[] f: getFelder()){
@@ -158,17 +163,13 @@ class Schachbrett {
 	 * der sie steht abgewickelt
 	 * @return ob der Vorgang erfolgreich war
 	 */
-	public Boolean selectFigur(Point2D koord){
-		if(felder[(int)koord.getX()][(int)koord.getY()].getBelegung() != Field.emptyField){
-			
-			selectedFig = felder[(int)koord.getX()][(int)koord.getY()].getBelegung();
-			posSelectedFig = koord;
-			return ((selectedFig < 32)&&(selectedFig >= 0));
-			
+	public Boolean selectFigur(Point2D coord){
+		if(searchFigIndexByCoord(coord) != Field.emptyField){
+			selectedFig = searchFigIndexByCoord(coord);
+			posSelectedFig = coord;
+			return true;
 		}
-		else{
-			return false;
-		}
+		return false;
 	}
 	
 	/**
@@ -184,7 +185,11 @@ class Schachbrett {
 					return f.getKoordinate();
 			}
 		}
-		return new Point2D(100000, 100000);
+		return nonSelectable;
+	}
+	
+	public int searchFigIndexByCoord(Point2D coord){
+		return felder[(int)coord.getX()][(int)coord.getY()].getBelegung();
 	}
 
 	/**
@@ -208,13 +213,9 @@ class Schachbrett {
 	 */
 	public String RealToDisplayCoord(Point2D p){
 		String str = "";
-		char x, y;
 		
-		x = ((char)(p.getX()+65));
-		y = ((char)(56 - p.getY()));
-		
-		str += x;
-		str += y;
+		str += ((char)(p.getX()+65));
+		str += ((char)(56 - p.getY()));
 		 
 		return str;
 	}
@@ -223,7 +224,7 @@ class Schachbrett {
 	 * Der Bauerntausch mit einem Eingabedialog fuer die gewuenschte Figur.
 	 * @param iW die Teamfarbe des Bauern
 	 */
-	public void changePawn(Boolean iW){
+	public void promotePawn(Boolean iW){
 		
 		Scanner scanner = new Scanner(System.in);
 		int x = 0;
@@ -292,7 +293,7 @@ class Schachbrett {
 	 */
 	public void hit(Point2D p){
 		
-		System.out.println("\n"+Fig[felder[(int)p.getX()][(int)p.getY()].getBelegung()].getName()+" has been terminated!\n");
+		System.out.println("\n"+Fig[searchFigIndexByCoord(p)].getName()+" has been terminated!\n");
 		felder[(int)p.getX()][(int)p.getY()].clear();
 	}
 
@@ -307,7 +308,7 @@ class Schachbrett {
 	
 		xGo = (int)p.getX();
 		yGo = (int)p.getY();
-		gegner = felder[xGo][yGo].getBelegung();
+		gegner = searchFigIndexByCoord(p);
 		xNow = (int)posSelectedFig.getX();
 		int moveVarX = 0;
 		
@@ -330,42 +331,41 @@ class Schachbrett {
 		
 		
 		//Rochade
-		if((Fig[selectedFig] instanceof King) && Math.abs(xNow-xGo) > 1){
-			
-			int rochRook;
-			
-			if(Fig[selectedFig].getIW()){
-				//rechts
-				if((xNow-xGo) == -2){
-					moveVarX = -2;
-					rochRook = 1;
-				}
-				else{
-					moveVarX = 3;
-					rochRook = 0;
-				}
-			}
-			else{
-				//rechts
-				if((xNow-xGo) == -2){
-					moveVarX = -2;
-					rochRook = 17;
-				}
-				else{
-					moveVarX = 3;
-					rochRook = 16;
-				}
-			}
-	
-			Point2D origSel = posSelectedFig;
-			//die Position des Turms aendern
-			selectFigur(searchFigCoordByIndex(rochRook));
-			changePos(new Point2D(posSelectedFig.getX()+moveVarX, posSelectedFig.getY()));
-			selectFigur(origSel);
-		}
-	
-		if(Fig[selectedFig] instanceof King){
+		if((Fig[selectedFig] instanceof King)){
 			((King)Fig[selectedFig]).setRochade(false);
+			
+			if(Math.abs(xNow-xGo) > 1){
+				int rochRook;
+			
+				if(Fig[selectedFig].getIW()){
+					//rechts
+					if((xNow-xGo) == -2){
+						moveVarX = -2;
+						rochRook = 1;
+					}
+					else{
+						moveVarX = 3;
+						rochRook = 0;
+					}
+				}
+				else{
+					//rechts
+					if((xNow-xGo) == -2){
+						moveVarX = -2;
+						rochRook = 17;
+					}
+					else{
+						moveVarX = 3;
+						rochRook = 16;
+					}
+				}
+	
+				Point2D origSel = posSelectedFig;
+				//die Position des Turms aendern
+				selectFigur(searchFigCoordByIndex(rochRook));
+				changePos(new Point2D(posSelectedFig.getX()+moveVarX, posSelectedFig.getY()));
+				selectFigur(origSel);
+			}
 		}
 		else if(Fig[selectedFig] instanceof Rook){
 			((Rook)Fig[selectedFig]).setRochade(false);
@@ -402,7 +402,7 @@ class Schachbrett {
 		//Bauernumwandlung
 		if(Fig[selectedFig] instanceof Pawn){
 			if((Fig[selectedFig].getIW() && p.getY() == 0) || (!Fig[selectedFig].getIW() && p.getY() == 7)){
-				changePawn(Fig[selectedFig].getIW());
+				promotePawn(Fig[selectedFig].getIW());
 			}
 		}
 		
@@ -452,7 +452,6 @@ class Schachbrett {
 			posX += moveX;
 			posY += moveY;
 		}
-		
 		return p;
 	}
 	
@@ -640,7 +639,7 @@ class Schachbrett {
 		//es wird von oben runtergezaehlt, um beim Entfernen keine Indexprobleme zu erzeugen
 		for(int i = moves.size()-1; i >= 0; i--){
 			remove = false;
-			origBelegung = felder[(int)moves.get(i).getX()][(int)moves.get(i).getY()].getBelegung();
+			origBelegung = searchFigIndexByCoord(moves.get(i));
 			felder[(int)moves.get(i).getX()][(int)moves.get(i).getY()].clear();
 			
 			changePos(moves.get(i));
@@ -683,7 +682,7 @@ class Schachbrett {
 		
 		for(int i = gegnerStart; i <= gegnerMax; i++){
 			Point2D curCoord = searchFigCoordByIndex(i);
-			if(curCoord.getX() == 100000)
+			if(curCoord.equals(nonSelectable))
 				continue;
 			selectFigur(curCoord);
 			
@@ -702,7 +701,7 @@ class Schachbrett {
 		int counter = 0;
 		
 		for(int i = 0; i < Fig.length; i++){
-			if(searchFigCoordByIndex(i).getX() != 100000)
+			if(!searchFigCoordByIndex(i).equals(nonSelectable))
 				counter++;
 		}
 		if(counter == 2)
@@ -734,7 +733,7 @@ class Schachbrett {
 		
 		for(int i = teamStart; i <= teamMax; i++){
 			Point2D curCoord = searchFigCoordByIndex(i);
-			if(curCoord.getX() == 100000)
+			if(curCoord.equals(nonSelectable))
 				continue;
 				
 			selectFigur(curCoord);

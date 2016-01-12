@@ -14,18 +14,23 @@ class Game {
 
 	public Schachbrett brett;
 	private Player winner;
-	private Player p1, p2;
+	private Player[] p;
 	private int totalGameDur;
 	
 	private static List<Game> gameHistory = new ArrayList<Game>();
 	
 	public Game(Player p1, Player p2) throws IOException{
 		
-		this.p1 = p1;
-		this.p2 = p2;
+		p = new Player[2];
+		p[0] = p1;
+		p[1] = p2;
 		winner = null;
 		totalGameDur = 0;
 		this.brett = new Schachbrett();
+	}
+	
+	public Player[] getPlayer(){
+		return p;
 	}
 	
 	/**
@@ -33,16 +38,16 @@ class Game {
 	 * @param isWhite welches Team gewonnen hat
 	 */
 	public void Win(Boolean isWhite){
-		if(p1.getIsWhite() == isWhite)
-			winner = p1;
+		if(p[1].getIsWhite() == isWhite)
+			winner = p[1];
 		else
-			winner = p2;
+			winner = p[2];
 		
 		consolePrint();
 		
 		System.out.println("\n\nPlayer "+winner.getName()+" has won!");
 		System.out.println("The enemy king can't move!");
-		totalGameDur = p1.getTimeSec()+p2.getTimeSec();
+		totalGameDur = p[1].getTimeSec()+p[2].getTimeSec();
 		gameHistory.add(this);
 	}
 	
@@ -55,7 +60,7 @@ class Game {
 		consolePrint();
 
 		System.out.println("DRAW");
-		totalGameDur = p1.getTimeSec()+p2.getTimeSec();
+		totalGameDur = p[1].getTimeSec()+p[2].getTimeSec();
 		gameHistory.add(this);
 	}
 	
@@ -75,7 +80,7 @@ class Game {
 		System.out.print("R - Rook(Turm)");
 		System.out.print("\t\tJ - Knight(Springer)\n");
 		
-		System.out.println("\n--black--  Name: "+p2.getName());
+		System.out.println("\n--black--  Name: "+p[1].getName());
 		if(brett.getBlackChecK())
 			System.out.print("\n    ****CHECK****    \n");
 		
@@ -87,33 +92,33 @@ class Game {
 				int index = brett.getFelder()[x][y].getBelegung();
 				
 				if(index < 32){
-					if(brett.Fig[index] instanceof Pawn)
+					if(brett.getFigures()[index] instanceof Pawn)
 						if(index < 16)
 							System.out.print("P");
 						else
 							System.out.print("p");
-					else if(brett.Fig[index] instanceof King)
+					else if(brett.getFigures()[index] instanceof King)
 						if(index < 16)
 							System.out.print("K");
 						else
 							System.out.print("k");
-					else if(brett.Fig[index] instanceof Queen)
+					else if(brett.getFigures()[index] instanceof Queen)
 						if(index < 16)
 							System.out.print("Q");
 						else
 							System.out.print("q");
-					else if(brett.Fig[index] instanceof Bishop)
+					else if(brett.getFigures()[index] instanceof Bishop)
 						if(index < 16)
 							System.out.print("B");
 						else
 							System.out.print("b");
-					else if(brett.Fig[index] instanceof Rook)
+					else if(brett.getFigures()[index] instanceof Rook)
 						if(index < 16)
 							System.out.print("R");
 						else
 							System.out.print("r");
 					
-					else if(brett.Fig[index] instanceof Knight)
+					else if(brett.getFigures()[index] instanceof Knight)
 						if(index < 16)
 							System.out.print("J");
 						else
@@ -130,7 +135,7 @@ class Game {
 			
 		}
 		
-		System.out.println("\n--WHITE--  Name: "+p1.getName());
+		System.out.println("\n--WHITE--  Name: "+p[1].getName());
 		if(brett.getWhiteChecK())
 			System.out.print("\n    ****CHECK****    \n");
 		System.out.println();
