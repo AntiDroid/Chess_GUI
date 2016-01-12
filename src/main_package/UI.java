@@ -13,7 +13,6 @@ class UI {
 	Boolean abort = false;
 	
 	int player;
-	int figMax, figMin;
 	
 	Scanner scan;
 	
@@ -41,16 +40,10 @@ class UI {
 
 		do{
 			
-			if(whiteTurn){ 
+			if(whiteTurn)
 				player = 1;
-				figMax = 15;
-				figMin = 0;
-			}
-			else{
+			else
 				player = 0;
-				figMax = 31;
-				figMin = 16;
-			}
 			
 			g1.consolePrint();
 			
@@ -77,7 +70,7 @@ class UI {
 				Boolean notEmpty = g1.brett.selectFigur(g1.brett.displayCoordToReal(str));
 				
 				//Wenn Figuren des falschen Teams ausgewaehlt wurden
-				if((g1.brett.getSelFig() < figMin) || (g1.brett.getSelFig() > figMax)){
+				if(g1.brett.getFigures()[g1.brett.getSelFig()].getIW() != g1.getPlayer()[player].getIsWhite()){
 					str = "";
 				}
 				else{
