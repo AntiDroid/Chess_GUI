@@ -56,8 +56,7 @@ class UI {
 			
 			do{
 			System.out.println("It's your turn "+p.getName()+"!");
-			System.out.println();
-			System.out.println("Which figure should be moved?(A5, B2, A3, ...)");
+			System.out.println("\nWhich figure should be moved?(A5, B2, A3, ...)");
 			System.out.println("(x to abort)");
 			str = scan.next().toUpperCase();
 			
