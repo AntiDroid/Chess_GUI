@@ -1,4 +1,5 @@
 package figures;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -17,7 +18,7 @@ public abstract class Figure {
 	private String name;
 	
 	/**
-	 * 
+	 * Die Figurenbilder werden hier unteranderem initialisiert.
 	 * @param sP Startposition der Figur
 	 * @param isW Teamfarbe
 	 * @param fP filePath des Figurenbildes
@@ -26,27 +27,25 @@ public abstract class Figure {
 	public Figure(Point2D sP, Boolean isW, String fP, String n){
 		
 		name = n;
+		isWhite = isW;
+		startPosition = sP;
 		
 		if(isW){
 			name += "(WHITE)";
-			fP += "w.png";
+			fP += "w";
 		}
 		else{
 			name += "(BLACK)";
-			fP += "s.png";
+			fP += "s";
 		}
-		
-		this.startPosition = sP;
-		image = new JLabel();
+		fP += ".png";
 		
 		try{
-			image.setIcon(new ImageIcon(ImageIO.read(new File(fP))));
+			image = new JLabel(new ImageIcon(ImageIO.read(new File(fP))));
 		}
 		catch(IOException e){
 			System.out.println(fP+" couldn't be loaded");
 		}
-		
-		isWhite = isW;
 	}
 	
 	public String getName(){
@@ -64,5 +63,9 @@ public abstract class Figure {
 	
 	public Boolean getIW(){
 		return isWhite;
+	}
+	
+	public JLabel getImage(){
+		return this.image;
 	}
 }

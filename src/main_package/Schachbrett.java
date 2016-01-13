@@ -148,6 +148,7 @@ public class Schachbrett {
 					for(Field fx: f){
 						if(Fig[x].getSP().equals(fx.getKoordinate())){
 							fx.addFigur(x);
+							fx.add(Fig[x].getImage());
 						}
 					}
 				}

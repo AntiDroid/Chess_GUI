@@ -1,8 +1,12 @@
 package main_package;
 
+import javax.swing.JPanel;
+
 import javafx.geometry.Point2D;
 
-class Field {
+class Field extends JPanel {
+
+	private static final long serialVersionUID = 1L;
 	
 	private int belegung;
 	private Point2D koordinate;
@@ -38,7 +42,7 @@ class Field {
 	public void addFigur(int index){
 		if(belegung != emptyField)
 			System.out.println("Fehler("+index+"): Feld ist bereits belegt von "+belegung+"! Position wird dennoch gesetzt!");
-			
+
 		this.belegung = index;
 	}
 	
