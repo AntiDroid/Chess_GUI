@@ -2,13 +2,6 @@ package main_package;
 import java.util.ArrayList;
 import java.util.List;
 
-import figures.Bishop;
-import figures.King;
-import figures.Knight;
-import figures.Pawn;
-import figures.Queen;
-import figures.Rook;
-
 
 public class Game {
 
@@ -63,9 +56,11 @@ public class Game {
 		gameHistory.add(this);
 	}
 	
+	
 	/**
 	 * Ausgabe des Feldes.
 	 */
+	/*
 	public void consolePrint(){
 		
 		for(int i = 0; i < 10; i++){
@@ -139,7 +134,7 @@ public class Game {
 			System.out.print("\n    ****CHECK****    \n");
 		System.out.println();
 	}
-
+	*/
 	/**
 	 * Ausgabemethode eines einzelnen Spieles
 	 */
