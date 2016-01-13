@@ -1,6 +1,6 @@
 # Chess_Console
 
 
-Ein konsolenbasierendes Schachspiel, welches noch eine Version mit einer GUI bekommt. 
+Die GUI-Version des Konsolenschachprojekts.
 Dies ist ein Schulprojekt.
 ;)
