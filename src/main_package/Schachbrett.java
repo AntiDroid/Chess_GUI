@@ -1,7 +1,6 @@
 package main_package;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import figures.Bishop;
 import figures.Figure;
@@ -232,25 +231,8 @@ public class Schachbrett {
 	 */
 	public void promotePawn(Boolean iW){
 		
-		Scanner scanner = new Scanner(System.in);
-		int x = 0;
 		Figure f = null;
-		do{
-		System.out.println("Your pawn has reached the other side!");
-		System.out.println("\nYou can select one of the following figures!");
-		System.out.println("1 - Knight");
-		System.out.println("2 - Rook");
-		System.out.println("3 - Bishop");
-		System.out.println("4 - Queen");
-		
-		try
-		{
-		x = Integer.parseInt(scanner.next());
-		}
-		catch(NumberFormatException e){
-			x = 5;
-		}
-		}while((x>4) && (x<1));
+		int x = 1;
 			
 		switch(x){
 		
@@ -293,7 +275,7 @@ public class Schachbrett {
 	 */
 	public void hit(Point2D p){
 		
-		System.out.println("\n"+Fig[searchFigIndexByCoord(p)].getName()+" has been terminated!\n");
+		//("\n"+Fig[searchFigIndexByCoord(p)].getName()+" has been terminated!\n");
 		felder[(int)p.getX()][(int)p.getY()].clear();
 	}
 
