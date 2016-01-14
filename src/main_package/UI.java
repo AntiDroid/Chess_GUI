@@ -59,7 +59,7 @@ class UI {
 		
 		}while(name2.equals("") || !name2.matches("\\w+"));
 		
-		g1 = new Game(new Player(name1, true), new Player(name2, false));
+		g1 = new Game(new Player(name1, false), new Player(name2, true));
 		
 		mainFrame = new JFrame("Chess");
 		mainFrame.setBounds(400, 100, 1200, 900);
@@ -95,19 +95,25 @@ class UI {
 
 					@Override
 					public void mouseClicked(MouseEvent arg0) {
-						if(((Field)arg0.getSource()).getBelegung() != 99){
+						
+						if(whiteTurn)
+							player = 1;
+						else
+							player = 0;
+						
+						int belegung = ((Field)arg0.getSource()).getBelegung();
+						
+						if(belegung != 99 && g1.brett.getFigures()[belegung].getIW() == g1.getPlayer()[player].getIsWhite()){
 							g1.brett.selectFigur(((Field)arg0.getSource()).getKoordinate());
 							List<Point2D> liste = g1.brett.movePossibilities();
 							
-							for(Point2D p: liste){
-								for(int y = 0; y<8; y++) {
-									for(int x = 0; x<8; x++) {
-										if(g1.brett.getFelder()[x][y].getKoordinate().equals(p)){
-											g1.brett.getFelder()[x][y].setBackground(Color.BLUE);
-										}
-									}
-								}
-							}
+							hightlightPos(liste);
+						}
+						else if(g1.brett.movePossibilities().contains(((Field)arg0.getSource()).getKoordinate())){
+							g1.brett.move(((Field)arg0.getSource()).getKoordinate());
+							((Field)arg0.getSource()).add(g1.brett.getFigures()[g1.brett.getSelFig()].getImage());
+							clearPositions();
+							gamePanel.repaint();
 						}
 					}
 
@@ -154,4 +160,24 @@ class UI {
 		mainFrame.setVisible(true);;
 	}
 
+	public void hightlightPos(List<Point2D> list){
+		
+		for(int i = 0; i<8; i++){
+			for(int j = 0; j<8; j++){
+				if(list.contains(g1.brett.getFelder()[i][j].getKoordinate()))
+					g1.brett.getFelder()[i][j].setBackground(Color.GREEN);
+			}
+		}
 	}
+	
+	public void clearPositions(){
+		for(int i = 0; i<8; i++){
+			for(int j = 0; j<8; j++){
+				g1.brett.getFelder()[i][j].setBackground(Color.WHITE);
+			}
+		}
+	}
+		
+	}
+	
+	
