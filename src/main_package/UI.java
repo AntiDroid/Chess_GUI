@@ -65,6 +65,7 @@ class UI {
 		
 		mainFrame = new JFrame("Chess");
 		mainFrame.setBounds(400, 100, 1200, 900);
+		mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		menuBar = new JMenuBar();
 		menu1 = new JMenu("Game");
@@ -255,6 +256,19 @@ class UI {
 					g1.brett.getFelder()[i][j].setBackground(Color.WHITE);
 				else
 					g1.brett.getFelder()[i][j].setBackground(Color.LIGHT_GRAY);
+				
+				int kingID = 0;
+				
+				if(g1.brett.getWhiteChecK())
+					kingID = 14;
+				else if(g1.brett.getBlackChecK())
+					kingID = 30;
+				
+				if(kingID != 0){
+					Point2D king = g1.brett.searchFigCoordByIndex(kingID);
+					g1.brett.getFelder()[(int)king.getX()][(int)king.getY()].setBackground(Color.RED);
+				}
+					
 			}
 		}
 	}

@@ -403,6 +403,7 @@ public class Schachbrett {
 			whiteCheck = Schach(!checkedOne);
 		else if(checkedOne)
 			blackCheck = Schach(!checkedOne);
+		
 	}
 
 	/**
