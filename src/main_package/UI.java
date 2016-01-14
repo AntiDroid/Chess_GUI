@@ -212,9 +212,7 @@ class UI {
 
 					@Override
 					public void mouseClicked(MouseEvent arg0) {
-						
-						System.out.println("NO REACTION - STOP CLICKING");
-						
+						JOptionPane.showMessageDialog(mainFrame, "The game is over!\nStart a new one!");
 					}
 
 					@Override
