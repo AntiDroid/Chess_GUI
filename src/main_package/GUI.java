@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 
 import javafx.geometry.Point2D;
 
-class UI {
+class GUI {
 
 	Game g1;
 	
@@ -35,10 +35,19 @@ class UI {
 	JPanel gamePanel, player1Panel, player2Panel;
 	JLabel player1, player2;
 	
-	MouseListener Func, noFunc;
+	/**
+	 * Reaktionen auf Eingaben im normalen Spielverlauf
+	 */
+	MouseListener Func;
+	
+	/**
+	 * Reaktionen auf Eingaben mit Fehlermeldungen, wenn das Spiel 
+	 * aktuell nicht mehr laeuft
+	 */
+	MouseListener noFunc;
 	
 	public static void main(String[] args) {	
-		UI ui = new UI();
+		GUI ui = new GUI();
 		ui.buildGUI();
 	}
 
@@ -121,6 +130,7 @@ class UI {
 		player2 = new JLabel(g1.getPlayer()[1].getName());
 		player2.setFont(new Font("Serif", Font.BOLD, 24));
 		
+
 		Func = new MouseListener(){
 
 			@Override
@@ -236,7 +246,10 @@ class UI {
 		mainFrame.setVisible(true);;
 	}
 
-	//highlights auf Feldern erzeugen auf die man sich bewegen kann
+	/**
+	 * highlights auf Feldern erzeugen auf die man sich bewegen kann
+	 * @param list Felder auf die man sich bewegen kann
+	 */
 	public void hightlightPos(List<Point2D> list){
 		
 		for(int i = 0; i<8; i++){
@@ -247,7 +260,9 @@ class UI {
 		}
 	}
 	
-	//die highlights entfernen und das Spielfeld neu "bemalen"
+	/**
+	 * die highlights entfernen und das Spielfeld neu "bemalen"
+	 */
 	public void clearPositions(){
 
 		for(int i = 0; i<8; i++){
@@ -273,7 +288,9 @@ class UI {
 		}
 	}
 	
-	//die Felder neu mit den Figurenbildern initialisieren
+	/**
+	 * die Felder neu mit den Figurenbildern initialisieren
+	 */
 	public void update(){
 		
 		for(Field[] f: g1.brett.getFelder()){
@@ -285,6 +302,10 @@ class UI {
 		}
 	}
 	
+	/**
+	 * wenn das Feld nicht mehr auf Eingaben reagiert,
+	 * wird es hiermit wiederhergestellt
+	 */
 	public void makeResponsive(){
 		for(Field[] f: g1.brett.getFelder()){
 			for(Field fx: f){
@@ -295,7 +316,9 @@ class UI {
 		}
 	}
 	
-	//dem Spielfeld die Klick-Funktionen nehmen
+	/**
+	 * dem Spielfeld die Klick-Funktionen nehmen
+	 */
 	public void makeNonResponsive(){
 		for(Field[] f: g1.brett.getFelder()){
 			for(Field fx: f){
@@ -303,9 +326,13 @@ class UI {
 			}
 		}
 	}
-		
-	//Situationen, welche nach der Bewegung einer Figur auftreten koennen
+	
+	/**
+	 * Situationen, welche nach der Bewegung einer Figur auftreten koennen,
+	 * werden durchgegangen
+	 */
 	public void checkForEnd(){
+		
 		if(g1.brett.SchachMatt(!whiteTurn)){
 			g1.Win(whiteTurn);
 			JOptionPane.showMessageDialog(mainFrame, "Checkmate!");
@@ -326,7 +353,9 @@ class UI {
 			JOptionPane.showMessageDialog(mainFrame, "Patt!");
 			makeNonResponsive();
 		}
+		
 	}
+	
 	}
 	
 	
