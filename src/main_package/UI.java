@@ -74,18 +74,16 @@ class UI {
 		player1Panel = new JPanel();
 		player1Panel.setBounds(900, 50, 250, 250);
 		player1Panel.setBackground(Color.WHITE);
-		player1Panel.setBorder(BorderFactory.createEmptyBorder( 5, 5, 5, 5));
 		
 		player2Panel = new JPanel();
 		player2Panel.setBounds(900, 515, 250, 250);
 		player2Panel.setBackground(Color.WHITE);
 		
 		player1 = new JLabel(g1.getPlayer()[0].getName());
-		player1.setFont(new Font("Serif", Font.PLAIN, 24));
-		player1.setBorder(BorderFactory.createEmptyBorder( 5, 5, 5, 5));
+		player1.setFont(new Font("Serif", Font.BOLD, 24));
 		
 		player2 = new JLabel(g1.getPlayer()[1].getName());
-		player2.setFont(new Font("Serif", Font.PLAIN, 24));
+		player2.setFont(new Font("Serif", Font.BOLD, 24));
 		
 		for(int y = 0; y<8; y++) {
 			for(int x = 0; x<8; x++) {
