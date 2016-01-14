@@ -106,12 +106,12 @@ class UI {
 						if(belegung != 99 && g1.brett.getFigures()[belegung].getIW() == g1.getPlayer()[player].getIsWhite()){
 							int previousFig = g1.brett.getSelFig();
 							g1.brett.selectFigur(((Field)arg0.getSource()).getKoordinate());
-							List<Point2D> liste = g1.brett.movePossibilities();
+							List<Point2D> liste = g1.brett.filter(g1.brett.movePossibilities(), g1.getPlayer()[player].getIsWhite());
 							if(g1.brett.getFigures()[g1.brett.getSelFig()].getIW() == g1.brett.getFigures()[previousFig].getIW())
 								clearPositions();
 							hightlightPos(liste);
 						}
-						else if(g1.brett.movePossibilities().contains(((Field)arg0.getSource()).getKoordinate())){
+						else if(g1.brett.filter(g1.brett.movePossibilities(), g1.getPlayer()[player].getIsWhite()).contains(((Field)arg0.getSource()).getKoordinate())){
 							
 							g1.brett.move(((Field)arg0.getSource()).getKoordinate());
 							
