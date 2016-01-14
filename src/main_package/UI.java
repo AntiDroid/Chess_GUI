@@ -172,6 +172,7 @@ class UI {
 		mainFrame.setVisible(true);;
 	}
 
+	//highlights auf Feldern erzeugen auf die man sich bewegen kann
 	public void hightlightPos(List<Point2D> list){
 		
 		for(int i = 0; i<8; i++){
@@ -182,6 +183,7 @@ class UI {
 		}
 	}
 	
+	//die highlights entfernen und das Spielfeld neu "bemalen"
 	public void clearPositions(){
 
 		for(int i = 0; i<8; i++){
@@ -194,6 +196,7 @@ class UI {
 		}
 	}
 	
+	//die Felder neu mit den Figurenbildern initialisieren
 	public void update(){
 		
 		for(Field[] f: g1.brett.getFelder()){
@@ -205,6 +208,7 @@ class UI {
 		}
 	}
 	
+	//dem Spielfeld die Klick-Funktionen nehmen
 	public void makeNonResponsive(){
 		for(Field[] f: g1.brett.getFelder()){
 			for(Field fx: f){
@@ -227,7 +231,6 @@ class UI {
 
 					@Override
 					public void mousePressed(MouseEvent e) {
-						// TODO Auto-generated method stub
 						
 					}
 
@@ -242,6 +245,7 @@ class UI {
 		}
 	}
 		
+	//Situationen, welche nach der Bewegung einer Figur auftreten koennen
 	public void checkForEnd(){
 		if(g1.brett.SchachMatt(!whiteTurn)){
 			g1.Win(whiteTurn);
