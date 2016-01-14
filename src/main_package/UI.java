@@ -104,9 +104,11 @@ class UI {
 						int belegung = ((Field)arg0.getSource()).getBelegung();
 						
 						if(belegung != 99 && g1.brett.getFigures()[belegung].getIW() == g1.getPlayer()[player].getIsWhite()){
+							int previousFig = g1.brett.getSelFig();
 							g1.brett.selectFigur(((Field)arg0.getSource()).getKoordinate());
 							List<Point2D> liste = g1.brett.movePossibilities();
-							
+							if(g1.brett.getFigures()[g1.brett.getSelFig()].getIW() == g1.brett.getFigures()[previousFig].getIW())
+								clearPositions();
 							hightlightPos(liste);
 						}
 						else if(g1.brett.movePossibilities().contains(((Field)arg0.getSource()).getKoordinate())){
@@ -114,6 +116,7 @@ class UI {
 							((Field)arg0.getSource()).add(g1.brett.getFigures()[g1.brett.getSelFig()].getImage());
 							clearPositions();
 							gamePanel.repaint();
+							whiteTurn = !whiteTurn;
 						}
 					}
 
