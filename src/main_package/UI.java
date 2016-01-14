@@ -3,6 +3,8 @@ package main_package;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
@@ -24,6 +26,7 @@ class UI {
 	
 	Boolean whiteTurn = true;
 	int player;
+	String name1, name2;
 	
 	JFrame mainFrame;
 	JMenuBar menuBar;
@@ -31,6 +34,8 @@ class UI {
 	JMenuItem mItem1, mItem2;
 	JPanel gamePanel, player1Panel, player2Panel;
 	JLabel player1, player2;
+	
+	MouseListener Func, noFunc;
 	
 	public static void main(String[] args) {	
 		UI ui = new UI();
@@ -41,9 +46,6 @@ class UI {
 	 * Spielverwaltung mit Benutzerinteraktionen
 	 */
 	void buildGUI(){
-	
-		String name1;
-		String name2;
 		
 		do{
 		name1 = JOptionPane.showInputDialog(null, "Enter your name!",
@@ -66,8 +68,38 @@ class UI {
 		
 		menuBar = new JMenuBar();
 		menu1 = new JMenu("Game");
+		
 		mItem1 = new JMenuItem("New");
+		
+		/*
+		mItem1.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				g1 = new Game(new Player(name1, false), new Player(name2, true));
+				update();
+				makeResponsive();
+				gamePanel.repaint();
+				whiteTurn = true;
+			}
+			
+		});
+		*/
+		
 		mItem2 = new JMenuItem("Remis");
+		mItem2.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				g1.Remis();
+				JOptionPane.showMessageDialog(mainFrame, "Remis was manually triggered!");
+				makeNonResponsive();
+				
+			}
+		});
+		
 		gamePanel = new JPanel();
 		gamePanel.setBounds(50, 25, 800, 770);
 		gamePanel.setBackground(Color.BLACK);
@@ -88,6 +120,92 @@ class UI {
 		player2 = new JLabel(g1.getPlayer()[1].getName());
 		player2.setFont(new Font("Serif", Font.BOLD, 24));
 		
+		Func = new MouseListener(){
+
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				if(whiteTurn)
+					player = 1;
+				else
+					player = 0;
+				
+				int belegung = ((Field)arg0.getSource()).getBelegung();
+				
+				//die Figurenauswahl - kein leeres Feld UND die Figur muss deiner Farbe entsprechen
+				if(belegung != Field.emptyField && g1.brett.getFigures()[belegung].getIW() == g1.getPlayer()[player].getIsWhite()){
+					int previousFig = g1.brett.getSelFig();
+					g1.brett.selectFigur(((Field)arg0.getSource()).getKoordinate());
+					List<Point2D> liste = g1.brett.filter(g1.brett.movePossibilities(), g1.getPlayer()[player].getIsWhite());
+					if(g1.brett.getFigures()[g1.brett.getSelFig()].getIW() == g1.brett.getFigures()[previousFig].getIW())
+						clearPositions();
+					hightlightPos(liste);
+				}
+				//die Positionsauswahl - das ausgewaehlte Feld muss einer Bewegungsmoeglichkeit der selektierten Figur entsprechen
+				else if(g1.brett.filter(g1.brett.movePossibilities(), g1.getPlayer()[player].getIsWhite()).contains(((Field)arg0.getSource()).getKoordinate())){
+					
+					g1.brett.move(((Field)arg0.getSource()).getKoordinate());
+					
+					update();
+					clearPositions();
+					gamePanel.repaint();
+					checkForEnd();
+					whiteTurn = !whiteTurn;
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				
+			}
+			
+		};
+		noFunc = new MouseListener(){
+
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				JOptionPane.showMessageDialog(mainFrame, "The game is over!\nStart a new one!");
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				
+			}
+			
+			
+		};
+		
 		for(int y = 0; y<8; y++) {
 			for(int x = 0; x<8; x++) {
 				if(g1.brett.getFelder()[x][y].getIsWhite())
@@ -95,62 +213,7 @@ class UI {
 				else
 					g1.brett.getFelder()[x][y].setBackground(Color.LIGHT_GRAY);
 				
-				g1.brett.getFelder()[x][y].addMouseListener(new MouseListener(){
-
-					@Override
-					public void mouseClicked(MouseEvent arg0) {
-						
-						if(whiteTurn)
-							player = 1;
-						else
-							player = 0;
-						
-						int belegung = ((Field)arg0.getSource()).getBelegung();
-						
-						//die Figurenauswahl - kein leeres Feld UND die Figur muss deiner Farbe entsprechen
-						if(belegung != Field.emptyField && g1.brett.getFigures()[belegung].getIW() == g1.getPlayer()[player].getIsWhite()){
-							int previousFig = g1.brett.getSelFig();
-							g1.brett.selectFigur(((Field)arg0.getSource()).getKoordinate());
-							List<Point2D> liste = g1.brett.filter(g1.brett.movePossibilities(), g1.getPlayer()[player].getIsWhite());
-							if(g1.brett.getFigures()[g1.brett.getSelFig()].getIW() == g1.brett.getFigures()[previousFig].getIW())
-								clearPositions();
-							hightlightPos(liste);
-						}
-						//die Positionsauswahl - das ausgewaehlte Feld muss einer Bewegungsmoeglichkeit der selektierten Figur entsprechen
-						else if(g1.brett.filter(g1.brett.movePossibilities(), g1.getPlayer()[player].getIsWhite()).contains(((Field)arg0.getSource()).getKoordinate())){
-							
-							g1.brett.move(((Field)arg0.getSource()).getKoordinate());
-							
-							update();
-							clearPositions();
-							gamePanel.repaint();
-							checkForEnd();
-							whiteTurn = !whiteTurn;
-						}
-					}
-
-					@Override
-					public void mouseEntered(MouseEvent arg0) {
-						
-					}
-
-					@Override
-					public void mouseExited(MouseEvent arg0) {
-						
-					}
-
-					@Override
-					public void mousePressed(MouseEvent arg0) {
-
-						
-					}
-
-					@Override
-					public void mouseReleased(MouseEvent arg0) {
-						
-					}
-					
-				});;
+				g1.brett.getFelder()[x][y].addMouseListener(Func);
 				gamePanel.add(g1.brett.getFelder()[x][y]);
 			}
 		}
@@ -208,39 +271,21 @@ class UI {
 		}
 	}
 	
+	public void makeResponsive(){
+		for(Field[] f: g1.brett.getFelder()){
+			for(Field fx: f){
+				fx.removeAll();
+				if(fx.getBelegung() != Field.emptyField)
+					fx.addMouseListener(Func);
+			}
+		}
+	}
+	
 	//dem Spielfeld die Klick-Funktionen nehmen
 	public void makeNonResponsive(){
 		for(Field[] f: g1.brett.getFelder()){
 			for(Field fx: f){
-				fx.addMouseListener(new MouseListener(){
-
-					@Override
-					public void mouseClicked(MouseEvent arg0) {
-						JOptionPane.showMessageDialog(mainFrame, "The game is over!\nStart a new one!");
-					}
-
-					@Override
-					public void mouseEntered(MouseEvent e) {
-						
-					}
-
-					@Override
-					public void mouseExited(MouseEvent e) {
-						
-					}
-
-					@Override
-					public void mousePressed(MouseEvent e) {
-						
-					}
-
-					@Override
-					public void mouseReleased(MouseEvent e) {
-						
-					}
-					
-					
-				});
+				fx.addMouseListener(noFunc);
 			}
 		}
 	}
