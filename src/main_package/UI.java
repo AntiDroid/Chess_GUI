@@ -112,8 +112,11 @@ class UI {
 							hightlightPos(liste);
 						}
 						else if(g1.brett.movePossibilities().contains(((Field)arg0.getSource()).getKoordinate())){
-							g1.brett.move(((Field)arg0.getSource()).getKoordinate());
+							if(belegung != 99)
+								if(g1.brett.getFigures()[belegung].getIW() != g1.brett.getFigures()[g1.brett.getSelFig()].getIW())
+									((Field)arg0.getSource()).removeAll();
 							((Field)arg0.getSource()).add(g1.brett.getFigures()[g1.brett.getSelFig()].getImage());
+							g1.brett.move(((Field)arg0.getSource()).getKoordinate());
 							clearPositions();
 							gamePanel.repaint();
 							whiteTurn = !whiteTurn;
