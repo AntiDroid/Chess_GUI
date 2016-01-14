@@ -114,7 +114,7 @@ class UI {
 						else if(g1.brett.movePossibilities().contains(((Field)arg0.getSource()).getKoordinate())){
 							
 							g1.brett.move(((Field)arg0.getSource()).getKoordinate());
-							((Field)arg0.getSource()).add(g1.brett.getFigures()[g1.brett.getSelFig()].getImage());
+							
 							clearPositions();
 							gamePanel.repaint();
 							whiteTurn = !whiteTurn;
@@ -170,7 +170,8 @@ class UI {
 		for(int i = 0; i<8; i++){
 			for(int j = 0; j<8; j++){
 				if(list.contains(g1.brett.getFelder()[i][j].getKoordinate()))
-					g1.brett.getFelder()[i][j].setBackground(Color.GREEN);
+					g1.brett.getFelder()[i][j].setBackground(Color.LIGHT_GRAY);
+				
 			}
 		}
 	}

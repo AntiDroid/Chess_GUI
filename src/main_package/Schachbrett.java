@@ -265,6 +265,7 @@ public class Schachbrett {
 		
 		felder[(int)posSelectedFig.getX()][(int)posSelectedFig.getY()].clear();
 		felder[(int)pos.getX()][(int)pos.getY()].addFigur(selectedFig);
+		felder[(int)pos.getX()][(int)pos.getY()].add(Fig[selectedFig].getImage());
 		
 		selectFigur(pos);
 	}
@@ -276,7 +277,6 @@ public class Schachbrett {
 	 */
 	public void hit(Point2D p){
 		felder[(int)p.getX()][(int)p.getY()].clear();
-		felder[(int)p.getX()][(int)p.getY()].removeAll();
 	}
 
 	/**

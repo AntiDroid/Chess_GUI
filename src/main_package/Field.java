@@ -40,9 +40,6 @@ class Field extends JPanel {
 	 * @param index FigurenID
 	 */
 	public void addFigur(int index){
-		if(belegung != emptyField)
-			System.out.println("Fehler("+index+"): Feld ist bereits belegt von "+belegung+"! Position wird dennoch gesetzt!");
-
 		this.belegung = index;
 	}
 	
@@ -50,6 +47,7 @@ class Field extends JPanel {
 	 * Methode, welche die Belegung eines Feldes auf "leer" setzt.
 	 */
 	public void clear(){
-		this.belegung = Field.emptyField;
+		removeAll();
+		belegung = Field.emptyField;
 	}
 }
