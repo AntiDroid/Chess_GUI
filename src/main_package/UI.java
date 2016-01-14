@@ -107,7 +107,8 @@ class UI {
 						
 						int belegung = ((Field)arg0.getSource()).getBelegung();
 						
-						if(belegung != 99 && g1.brett.getFigures()[belegung].getIW() == g1.getPlayer()[player].getIsWhite()){
+						//die Figurenauswahl - kein leeres Feld UND die Figur muss deiner Farbe entsprechen
+						if(belegung != Field.emptyField && g1.brett.getFigures()[belegung].getIW() == g1.getPlayer()[player].getIsWhite()){
 							int previousFig = g1.brett.getSelFig();
 							g1.brett.selectFigur(((Field)arg0.getSource()).getKoordinate());
 							List<Point2D> liste = g1.brett.filter(g1.brett.movePossibilities(), g1.getPlayer()[player].getIsWhite());
@@ -115,6 +116,7 @@ class UI {
 								clearPositions();
 							hightlightPos(liste);
 						}
+						//die Positionsauswahl - das ausgewaehlte Feld muss einer Bewegungsmoeglichkeit der selektierten Figur entsprechen
 						else if(g1.brett.filter(g1.brett.movePossibilities(), g1.getPlayer()[player].getIsWhite()).contains(((Field)arg0.getSource()).getKoordinate())){
 							
 							g1.brett.move(((Field)arg0.getSource()).getKoordinate());
@@ -122,6 +124,7 @@ class UI {
 							update();
 							clearPositions();
 							gamePanel.repaint();
+							checkForEnd();
 							whiteTurn = !whiteTurn;
 						}
 					}
@@ -201,7 +204,68 @@ class UI {
 			}
 		}
 	}
+	
+	public void makeNonResponsive(){
+		for(Field[] f: g1.brett.getFelder()){
+			for(Field fx: f){
+				fx.addMouseListener(new MouseListener(){
+
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						
+						System.out.println("NO REACTION - STOP CLICKING");
+						
+					}
+
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						
+					}
+
+					@Override
+					public void mouseExited(MouseEvent e) {
+						
+					}
+
+					@Override
+					public void mousePressed(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void mouseReleased(MouseEvent e) {
+						
+					}
+					
+					
+				});
+			}
+		}
+	}
 		
+	public void checkForEnd(){
+		if(g1.brett.SchachMatt(!whiteTurn)){
+			g1.Win(whiteTurn);
+			JOptionPane.showMessageDialog(mainFrame, "Checkmate!");
+			makeNonResponsive();
+		}
+		else if(g1.brett.Patt(!whiteTurn)){
+			g1.Remis();
+			JOptionPane.showMessageDialog(mainFrame, "Patt!");
+			makeNonResponsive();
+		}     
+		else if(g1.brett.Patt(whiteTurn)){
+			g1.Remis();
+			JOptionPane.showMessageDialog(mainFrame, "Patt!");
+			makeNonResponsive();
+		}
+		else if(g1.brett.king1v1()){
+			g1.Remis();
+			JOptionPane.showMessageDialog(mainFrame, "Patt!");
+			makeNonResponsive();
+		}
+	}
 	}
 	
 	

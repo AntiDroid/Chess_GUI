@@ -35,20 +35,14 @@ public class Game {
 			winner = 0;
 		else
 			winner = 1;
-		
-		System.out.println("\n\nPlayer "+p[winner].getName()+" has won!");
-		System.out.println("The enemy king can't move!");
-		totalGameDur = p[1].getTimeSec()+p[2].getTimeSec();
+	
 		gameHistory.add(this);
 	}
 	
 	/**
 	 * Unentschieden durch Patt oder 1v1 King Situationen automatisch aufgerufen.
 	 */
-	public void Draw() {
-
-		System.out.println("DRAW");
-		totalGameDur = p[1].getTimeSec()+p[0].getTimeSec();
+	public void Remis() {
 		gameHistory.add(this);
 	}
 	
