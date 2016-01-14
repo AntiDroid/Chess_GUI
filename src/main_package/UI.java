@@ -90,7 +90,11 @@ class UI {
 		
 		for(int y = 0; y<8; y++) {
 			for(int x = 0; x<8; x++) {
-				g1.brett.getFelder()[x][y].setBackground(Color.WHITE);
+				if(g1.brett.getFelder()[x][y].getIsWhite())
+					g1.brett.getFelder()[x][y].setBackground(Color.WHITE);
+				else
+					g1.brett.getFelder()[x][y].setBackground(Color.LIGHT_GRAY);
+				
 				g1.brett.getFelder()[x][y].addMouseListener(new MouseListener(){
 
 					@Override
@@ -115,6 +119,7 @@ class UI {
 							
 							g1.brett.move(((Field)arg0.getSource()).getKoordinate());
 							
+							update();
 							clearPositions();
 							gamePanel.repaint();
 							whiteTurn = !whiteTurn;
@@ -170,16 +175,30 @@ class UI {
 		for(int i = 0; i<8; i++){
 			for(int j = 0; j<8; j++){
 				if(list.contains(g1.brett.getFelder()[i][j].getKoordinate()))
-					g1.brett.getFelder()[i][j].setBackground(Color.LIGHT_GRAY);
-				
+					g1.brett.getFelder()[i][j].setBackground(Color.cyan);
 			}
 		}
 	}
 	
 	public void clearPositions(){
+
 		for(int i = 0; i<8; i++){
 			for(int j = 0; j<8; j++){
-				g1.brett.getFelder()[i][j].setBackground(Color.WHITE);
+				if(g1.brett.getFelder()[i][j].getIsWhite())
+					g1.brett.getFelder()[i][j].setBackground(Color.WHITE);
+				else
+					g1.brett.getFelder()[i][j].setBackground(Color.LIGHT_GRAY);
+			}
+		}
+	}
+	
+	public void update(){
+		
+		for(Field[] f: g1.brett.getFelder()){
+			for(Field fx: f){
+				fx.removeAll();
+				if(fx.getBelegung() != 99)
+					fx.add(g1.brett.getFigures()[fx.getBelegung()].getImage());
 			}
 		}
 	}

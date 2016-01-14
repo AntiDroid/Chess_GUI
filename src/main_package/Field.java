@@ -47,7 +47,6 @@ class Field extends JPanel {
 	 * Methode, welche die Belegung eines Feldes auf "leer" setzt.
 	 */
 	public void clear(){
-		removeAll();
 		belegung = Field.emptyField;
 	}
 }
