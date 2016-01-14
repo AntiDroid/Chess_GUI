@@ -275,9 +275,8 @@ public class Schachbrett {
 	 * @param p Feld des zu Schlagenden
 	 */
 	public void hit(Point2D p){
-		
-		//("\n"+Fig[searchFigIndexByCoord(p)].getName()+" has been terminated!\n");
 		felder[(int)p.getX()][(int)p.getY()].clear();
+		felder[(int)p.getX()][(int)p.getY()].removeAll();
 	}
 
 	/**
