@@ -3,6 +3,9 @@ package main_package;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -12,6 +15,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import javafx.geometry.Point2D;
 
 class UI {
 
@@ -54,8 +59,6 @@ class UI {
 		
 		}while(name2.equals("") || !name2.matches("\\w+"));
 		
-		System.out.println(name1);
-		System.out.println(name2);
 		g1 = new Game(new Player(name1, true), new Player(name2, false));
 		
 		mainFrame = new JFrame("Chess");
@@ -88,6 +91,48 @@ class UI {
 		for(int y = 0; y<8; y++) {
 			for(int x = 0; x<8; x++) {
 				g1.brett.getFelder()[x][y].setBackground(Color.WHITE);
+				g1.brett.getFelder()[x][y].addMouseListener(new MouseListener(){
+
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						if(((Field)arg0.getSource()).getBelegung() != 99){
+							g1.brett.selectFigur(((Field)arg0.getSource()).getKoordinate());
+							List<Point2D> liste = g1.brett.movePossibilities();
+							
+							for(Point2D p: liste){
+								for(int y = 0; y<8; y++) {
+									for(int x = 0; x<8; x++) {
+										if(g1.brett.getFelder()[x][y].getKoordinate().equals(p)){
+											g1.brett.getFelder()[x][y].setBackground(Color.BLUE);
+										}
+									}
+								}
+							}
+						}
+					}
+
+					@Override
+					public void mouseEntered(MouseEvent arg0) {
+						
+					}
+
+					@Override
+					public void mouseExited(MouseEvent arg0) {
+						
+					}
+
+					@Override
+					public void mousePressed(MouseEvent arg0) {
+
+						
+					}
+
+					@Override
+					public void mouseReleased(MouseEvent arg0) {
+						
+					}
+					
+				});;
 				gamePanel.add(g1.brett.getFelder()[x][y]);
 			}
 		}
