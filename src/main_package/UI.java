@@ -1,20 +1,14 @@
 package main_package;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridLayout;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 class UI {
@@ -40,7 +34,29 @@ class UI {
 	 */
 	void buildGUI(){
 		
-		g1 = new Game(new Player("Talip", true), new Player("Luise", false));
+		String name1;
+		String name2;
+		
+		
+		do{
+		name1 = JOptionPane.showInputDialog(null, "Enter your name!",
+                "Player 1",
+                JOptionPane.PLAIN_MESSAGE);
+		
+		}while(name1.equals("") || !name1.matches("\\w+"));
+		
+		do{
+		name2 = JOptionPane.showInputDialog(null, "Enter your name!",
+                "Player 2",
+                JOptionPane.PLAIN_MESSAGE);
+		
+		}while(name2.equals("") || !name2.matches("\\w+"));
+		
+		System.out.println(name1);
+		System.out.println(name2);
+		g1 = new Game(new Player(name1, true), new Player(name2, false));
+		
+		
 		
 		mainFrame = new JFrame("Chess");
 		mainFrame.setBounds(400, 100, 1200, 900);
