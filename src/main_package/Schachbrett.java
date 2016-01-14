@@ -1,6 +1,13 @@
 package main_package;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import figures.Bishop;
 import figures.Figure;
@@ -21,6 +28,8 @@ public class Schachbrett {
 	
 	private Boolean whiteCheck;
 	private Boolean blackCheck;
+	
+	public int pP = 50;
 	
 	static private final Point2D nonSelectable = new Point2D(100000, 100000);
 	
@@ -82,7 +91,7 @@ public class Schachbrett {
 			
 			Fig = new Figure[32];
 			
-			//Figur name LEFT/RIGHT BLACK/WHITE
+			//Figure name LEFT/RIGHT BLACK/WHITE
 			Figure rookLW = new Rook(true, new Point2D(0, 7));
 			Figure rookRW = new Rook(true, new Point2D(7, 7));
 			Fig[0] = rookLW;
@@ -232,29 +241,29 @@ public class Schachbrett {
 	 */
 	public void promotePawn(Boolean iW){
 		
-		Figure f = null;
-		int x = 1;
+		String[] choices = {"Knight", "Rook", "Bishop", "Queen"};
+	    String input = (String) JOptionPane.showInputDialog(null, "Choose a figure!", "Promote your pawn!", JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
 			
-		switch(x){
+		switch(input){
 		
-		case 1:
-			f = new Knight(iW, Fig[selectedFig].getSP());
+		case "Knight":
+			Fig[selectedFig] = new Knight(iW, Fig[selectedFig].getSP());
 			break;
-		case 2:
-			f = new Rook(iW, Fig[selectedFig].getSP());
-			break;
-			
-		case 3:
-			f = new Bishop(iW, Fig[selectedFig].getSP());
+		case "Rook":
+			Fig[selectedFig] = new Rook(iW, Fig[selectedFig].getSP());
 			break;
 			
-		case 4:
-			f = new Queen(iW, Fig[selectedFig].getSP());
+		case "Bishop":
+			Fig[selectedFig] = new Bishop(iW, Fig[selectedFig].getSP());
 			break;
+			
+		case "Queen":
+			Fig[selectedFig] = new Queen(iW, Fig[selectedFig].getSP());
+			break;
+			
 		}
 		
-		//die neue Figur mit der selben ID des Bauern speichern
-		Fig[selectedFig] = f;
+		pP = 50;
 	}
 
 	/**
@@ -384,7 +393,7 @@ public class Schachbrett {
 		//Bauernumwandlung
 		if(Fig[selectedFig] instanceof Pawn){
 			if((Fig[selectedFig].getIW() && p.getY() == 0) || (!Fig[selectedFig].getIW() && p.getY() == 7)){
-				promotePawn(Fig[selectedFig].getIW());
+				pP = selectedFig;
 			}
 		}
 		
@@ -549,7 +558,7 @@ public class Schachbrett {
 				}
 			}
 		}
-		else if(this.Fig[selectedFig] instanceof Pawn){
+		else if(this.Fig[selectedFig] instanceof Pawn && (y-1 != -1) && (y+1 != 8)){
 			
 			int varY;
 			

@@ -7,9 +7,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -81,21 +85,22 @@ class GUI {
 		
 		mItem1 = new JMenuItem("New");
 		
-		/*
+		
 		mItem1.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				/*
 				g1 = new Game(new Player(name1, false), new Player(name2, true));
 				update();
 				makeResponsive();
 				gamePanel.repaint();
 				whiteTurn = true;
+				*/
 			}
 			
 		});
-		*/
+		
 		
 		mItem2 = new JMenuItem("Remis");
 		mItem2.addActionListener(new ActionListener(){
@@ -157,11 +162,13 @@ class GUI {
 					
 					g1.brett.move(((Field)arg0.getSource()).getKoordinate());
 					
+					checkForEnd();
 					update();
 					clearPositions();
+				
+					
 					gamePanel.repaint();
-					checkForEnd();
-					whiteTurn = !whiteTurn;
+					//whiteTurn = !whiteTurn;
 				}
 			}
 
@@ -296,10 +303,11 @@ class GUI {
 		for(Field[] f: g1.brett.getFelder()){
 			for(Field fx: f){
 				fx.removeAll();
-				if(fx.getBelegung() != 99)
+				if(fx.getBelegung() != Field.emptyField){
 					fx.add(g1.brett.getFigures()[fx.getBelegung()].getImage());
+				}
 			}
-		}
+		}		
 	}
 	
 	/**
@@ -333,7 +341,10 @@ class GUI {
 	 */
 	public void checkForEnd(){
 		
-		if(g1.brett.SchachMatt(!whiteTurn)){
+		if(g1.brett.pP != 50){
+			g1.brett.promotePawn(whiteTurn);
+		}
+		else if(g1.brett.SchachMatt(!whiteTurn)){
 			g1.Win(whiteTurn);
 			JOptionPane.showMessageDialog(mainFrame, "Checkmate!");
 			makeNonResponsive();
