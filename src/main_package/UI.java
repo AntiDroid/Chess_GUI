@@ -123,7 +123,6 @@ class UI {
 							clearPositions();
 							gamePanel.repaint();
 							whiteTurn = !whiteTurn;
-							
 						}
 					}
 
