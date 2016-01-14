@@ -1,10 +1,12 @@
 package main_package;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -22,7 +24,8 @@ class UI {
 	JMenuBar menuBar;
 	JMenu menu1;
 	JMenuItem mItem1, mItem2;
-	JPanel gamePanel;
+	JPanel gamePanel, player1Panel, player2Panel;
+	JLabel player1, player2;
 	
 	public static void main(String[] args) {	
 		UI ui = new UI();
@@ -33,21 +36,20 @@ class UI {
 	 * Spielverwaltung mit Benutzerinteraktionen
 	 */
 	void buildGUI(){
-		
+	
 		String name1;
 		String name2;
 		
-		
 		do{
 		name1 = JOptionPane.showInputDialog(null, "Enter your name!",
-                "Player 1",
+                "BLACK",
                 JOptionPane.PLAIN_MESSAGE);
 		
 		}while(name1.equals("") || !name1.matches("\\w+"));
 		
 		do{
 		name2 = JOptionPane.showInputDialog(null, "Enter your name!",
-                "Player 2",
+                "WHITE",
                 JOptionPane.PLAIN_MESSAGE);
 		
 		}while(name2.equals("") || !name2.matches("\\w+"));
@@ -55,8 +57,6 @@ class UI {
 		System.out.println(name1);
 		System.out.println(name2);
 		g1 = new Game(new Player(name1, true), new Player(name2, false));
-		
-		
 		
 		mainFrame = new JFrame("Chess");
 		mainFrame.setBounds(400, 100, 1200, 900);
@@ -71,6 +71,22 @@ class UI {
 		gamePanel.setLayout(new GridLayout(8, 8, 3 , 3));
 		gamePanel.setBorder(BorderFactory.createEmptyBorder( 5, 5, 5, 5));
 		
+		player1Panel = new JPanel();
+		player1Panel.setBounds(900, 50, 250, 250);
+		player1Panel.setBackground(Color.WHITE);
+		player1Panel.setBorder(BorderFactory.createEmptyBorder( 5, 5, 5, 5));
+		
+		player2Panel = new JPanel();
+		player2Panel.setBounds(900, 515, 250, 250);
+		player2Panel.setBackground(Color.WHITE);
+		
+		player1 = new JLabel(g1.getPlayer()[0].getName());
+		player1.setFont(new Font("Serif", Font.PLAIN, 24));
+		player1.setBorder(BorderFactory.createEmptyBorder( 5, 5, 5, 5));
+		
+		player2 = new JLabel(g1.getPlayer()[1].getName());
+		player2.setFont(new Font("Serif", Font.PLAIN, 24));
+		
 		for(int y = 0; y<8; y++) {
 			for(int x = 0; x<8; x++) {
 				g1.brett.getFelder()[x][y].setBackground(Color.WHITE);
@@ -78,9 +94,13 @@ class UI {
 			}
 		}
 		
+		player1Panel.add(player1);
+		player2Panel.add(player2);
 		
 		mainFrame.setJMenuBar(menuBar);
 		mainFrame.add(gamePanel);
+		mainFrame.add(player1Panel);
+		mainFrame.add(player2Panel);
 		menuBar.add(menu1);
 		menu1.add(mItem1);
 		menu1.add(mItem2);
