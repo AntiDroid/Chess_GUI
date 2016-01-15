@@ -305,6 +305,7 @@ class GUI {
 				fx.removeAll();
 				if(fx.getBelegung() != Field.emptyField){
 					fx.add(g1.brett.getFigures()[fx.getBelegung()].getImage());
+					g1.brett.getFigures()[fx.getBelegung()].image.setText(" ");
 				}
 			}
 		}		
