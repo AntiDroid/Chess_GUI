@@ -1,14 +1,21 @@
 package main_package;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -32,7 +39,10 @@ class GUI {
 	JMenu menu1;
 	JMenuItem mItem1, mItem2;
 	JPanel gamePanel, player1Panel, player2Panel;
+	JPanel terminatedFig1, terminatedFig2;
 	JLabel player1, player2;
+	
+	JLabel time1Total, time2Total, time1Cur, time2Cur;
 	
 	Color bField = new Color(0, 102, 51);
 	Color wField = new Color(255, 255, 255);
@@ -97,17 +107,12 @@ class GUI {
 		
 		mItem1 = new JMenuItem("New");
 		
-		
 		mItem1.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				/*
-				g1 = new Game(new Player(name1, false), new Player(name2, true));
-				update();
-				whiteTurn = true;
-				*/
+
 			}
 			
 		});
@@ -127,23 +132,35 @@ class GUI {
 		gamePanel = new JPanel();
 		gamePanel.setBounds(50, 25, 800, 770);
 		gamePanel.setBackground(Color.BLACK);
-		gamePanel.setLayout(new GridLayout(8, 8, 3 , 3));
+		gamePanel.setLayout(new GridLayout(8, 8, 3, 3));
 		gamePanel.setBorder(BorderFactory.createEmptyBorder( 5, 5, 5, 5));
 		
 		player1Panel = new JPanel();
+		player1Panel.setLayout(new BoxLayout(player1Panel, BoxLayout.PAGE_AXIS));
 		player1Panel.setBounds(900, 50, 250, 250);
-		player1Panel.setBackground(Color.WHITE);
 		
 		player2Panel = new JPanel();
+		player2Panel.setLayout(new BoxLayout(player2Panel, BoxLayout.PAGE_AXIS));
 		player2Panel.setBounds(900, 515, 250, 250);
-		player2Panel.setBackground(Color.WHITE);
 		
 		player1 = new JLabel(g1.getPlayer()[0].getName());
+		player1.setAlignmentX(Component.CENTER_ALIGNMENT);
 		player1.setFont(new Font("Serif", Font.BOLD, 24));
 		
 		player2 = new JLabel(g1.getPlayer()[1].getName());
+		player2.setAlignmentX(Component.CENTER_ALIGNMENT);
 		player2.setFont(new Font("Serif", Font.BOLD, 24));
 		
+		terminatedFig1 = new JPanel();
+		terminatedFig1.setLayout(new GridLayout(2, 8, 0, 0));
+		
+		terminatedFig2 = new JPanel();
+		terminatedFig2.setLayout(new GridLayout(2, 8, 0, 0));
+		
+		time1Total = new JLabel();
+		time2Total = new JLabel();
+		time1Cur = new JLabel();
+		time2Cur = new JLabel();
 
 		Func = new MouseListener(){
 
@@ -172,6 +189,18 @@ class GUI {
 				else if(pIsWhite == g1.brett.getFigures()[g1.brett.getSelFig()].getIW() && g1.brett.checkFilteredMovePossibilities(pIsWhite).contains(f.getKoordinate())){
 					
 					g1.brett.move(f.getKoordinate());
+					
+					for(int i = 0; i < g1.brett.getFigures().length; i++){
+						if(g1.brett.searchFigCoordByIndex(i) == g1.brett.nonSelectable){
+							if(i<16)
+								terminatedFig2.add(g1.brett.getFigures()[i].getImage());
+							else
+								terminatedFig1.add(g1.brett.getFigures()[i].getImage());
+							
+							terminatedFig1.repaint();
+							terminatedFig2.repaint();
+						}
+					}
 					
 					update();
 					checkForEnd();
@@ -248,7 +277,9 @@ class GUI {
 		}
 		
 		player1Panel.add(player1);
+		player1Panel.add(terminatedFig1);
 		player2Panel.add(player2);
+		player2Panel.add(terminatedFig2);
 		
 		mainFrame.setJMenuBar(menuBar);
 		mainFrame.add(gamePanel);

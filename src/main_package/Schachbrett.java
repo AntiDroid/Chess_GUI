@@ -23,7 +23,7 @@ public class Schachbrett {
 	private Boolean whiteCheck;
 	private Boolean blackCheck;
 	
-	static private final Point2D nonSelectable = new Point2D(100000, 100000);
+	static public final Point2D nonSelectable = new Point2D(100000, 100000);
 	
 	/**
 	 * Bei der Initialisierung eines Schachbretts, wird das 8x8 Feld initialisiert 
