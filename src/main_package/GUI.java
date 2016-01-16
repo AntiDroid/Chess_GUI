@@ -190,17 +190,38 @@ class GUI {
 					
 					g1.brett.move(f.getKoordinate());
 					
+					JLabel img, bugFixIMG;
+					
+					terminatedFig2.removeAll();
+					terminatedFig1.removeAll();
+					
 					for(int i = 0; i < g1.brett.getFigures().length; i++){
 						if(g1.brett.searchFigCoordByIndex(i) == g1.brett.nonSelectable){
-							if(i<16)
-								terminatedFig2.add(g1.brett.getFigures()[i].getImage());
-							else
-								terminatedFig1.add(g1.brett.getFigures()[i].getImage());
+							img = g1.brett.getFigures()[i].getImage();
+							try {
+								bugFixIMG = new JLabel(new ImageIcon(ImageIO.read(new File("Figurenbilder/King_w.png"))));
+
+							if(i<16){
+								terminatedFig2.add(img);
+								terminatedFig2.add(bugFixIMG);
+							}
+							else{
+								terminatedFig1.add(img);
+								terminatedFig1.add(bugFixIMG);
+							}
 							
-							terminatedFig1.repaint();
-							terminatedFig2.repaint();
+							img.setText("");
+							bugFixIMG.setText("");
+
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
 					}
+					
+					terminatedFig1.repaint();
+					terminatedFig2.repaint();
 					
 					update();
 					checkForEnd();
