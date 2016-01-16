@@ -55,6 +55,8 @@ class GUI {
 	 */
 	void buildGUI(){
 		
+		try{
+		
 		do{
 		name1 = JOptionPane.showInputDialog(null, "Enter your name!",
                 "BLACK",
@@ -62,12 +64,24 @@ class GUI {
 		
 		}while(name1.equals("") || !name1.matches("\\w+"));
 		
+		}
+		catch(NullPointerException n){
+			name1 = "Player 1";
+		}
+		
+		try{
+		
 		do{
 		name2 = JOptionPane.showInputDialog(null, "Enter your name!",
                 "WHITE",
                 JOptionPane.PLAIN_MESSAGE);
 		
 		}while(name2.equals("") || !name2.matches("\\w+"));
+		
+		}
+		catch(NullPointerException n){
+			name2 = "Player 2";
+		}
 		
 		g1 = new Game(new Player(name1, false), new Player(name2, true));
 		
