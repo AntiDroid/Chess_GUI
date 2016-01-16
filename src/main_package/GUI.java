@@ -102,11 +102,9 @@ class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
 				g1.Remis();
 				JOptionPane.showMessageDialog(mainFrame, "Remis was manually triggered!");
 				makeNonResponsive();
-				
 			}
 		});
 		
@@ -301,7 +299,6 @@ class GUI {
 	public void makeResponsive(){
 		for(Field[] f: g1.brett.getFelder()){
 			for(Field fx: f){
-				fx.removeAll();
 				if(fx.getBelegung() != Field.emptyField)
 					fx.addMouseListener(Func);
 			}
