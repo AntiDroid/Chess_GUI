@@ -34,6 +34,9 @@ class GUI {
 	JPanel gamePanel, player1Panel, player2Panel;
 	JLabel player1, player2;
 	
+	Color bField = new Color(0, 102, 51);
+	Color wField = new Color(255, 255, 255);
+	
 	/**
 	 * Reaktionen auf Eingaben im normalen Spielverlauf
 	 */
@@ -232,13 +235,15 @@ class GUI {
 		
 		for(int y = 0; y<8; y++) {
 			for(int x = 0; x<8; x++) {
-				if(g1.brett.getFelder()[x][y].getIsWhite())
-					g1.brett.getFelder()[x][y].setBackground(Color.WHITE);
-				else
-					g1.brett.getFelder()[x][y].setBackground(Color.LIGHT_GRAY);
+				Field f = g1.brett.getFelder()[x][y];
 				
-				g1.brett.getFelder()[x][y].addMouseListener(Func);
-				gamePanel.add(g1.brett.getFelder()[x][y]);
+				if(f.getIsWhite())
+					f.setBackground(wField);
+				else
+					f.setBackground(bField);
+				
+				f.addMouseListener(Func);
+				gamePanel.add(f);
 			}
 		}
 		
@@ -281,9 +286,9 @@ class GUI {
 		for(int i = 0; i<8; i++){
 			for(int j = 0; j<8; j++){
 				if(g1.brett.getFelder()[i][j].getIsWhite())
-					g1.brett.getFelder()[i][j].setBackground(Color.WHITE);
+					g1.brett.getFelder()[i][j].setBackground(wField);
 				else
-					g1.brett.getFelder()[i][j].setBackground(Color.LIGHT_GRAY);				
+					g1.brett.getFelder()[i][j].setBackground(bField);				
 			}
 		}
 	}
