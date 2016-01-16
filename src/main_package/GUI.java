@@ -99,7 +99,7 @@ class GUI {
 		g1 = new Game(new Player(name1, false), new Player(name2, true));
 		
 		mainFrame = new JFrame("Chess");
-		mainFrame.setBounds(400, 100, 1200, 900);
+		mainFrame.setBounds(400, 100, 1400, 900);
 		mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		menuBar = new JMenuBar();
@@ -137,11 +137,11 @@ class GUI {
 		
 		player1Panel = new JPanel();
 		player1Panel.setLayout(new BoxLayout(player1Panel, BoxLayout.PAGE_AXIS));
-		player1Panel.setBounds(900, 50, 250, 250);
+		player1Panel.setBounds(900, 50, 450, 250);
 		
 		player2Panel = new JPanel();
 		player2Panel.setLayout(new BoxLayout(player2Panel, BoxLayout.PAGE_AXIS));
-		player2Panel.setBounds(900, 515, 250, 250);
+		player2Panel.setBounds(900, 515, 450, 250);
 		
 		player1 = new JLabel(g1.getPlayer()[0].getName());
 		player1.setAlignmentX(Component.CENTER_ALIGNMENT);
