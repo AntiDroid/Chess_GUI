@@ -23,8 +23,6 @@ public class Schachbrett {
 	private Boolean whiteCheck;
 	private Boolean blackCheck;
 	
-	public int pP = 50;
-	
 	static private final Point2D nonSelectable = new Point2D(100000, 100000);
 	
 	/**
@@ -256,8 +254,6 @@ public class Schachbrett {
 			break;
 			
 		}
-		
-		pP = 50;
 	}
 
 	/**
@@ -387,7 +383,7 @@ public class Schachbrett {
 		//Bauernumwandlung
 		if(Fig[selectedFig] instanceof Pawn){
 			if((Fig[selectedFig].getIW() && p.getY() == 0) || (!Fig[selectedFig].getIW() && p.getY() == 7)){
-				pP = selectedFig;
+				promotePawn(Fig[selectedFig].getIW());
 			}
 		}
 		

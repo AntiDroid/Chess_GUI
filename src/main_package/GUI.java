@@ -99,11 +99,10 @@ class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
 				/*
 				g1 = new Game(new Player(name1, false), new Player(name2, true));
 				update();
-				makeResponsive();
-				gamePanel.repaint();
 				whiteTurn = true;
 				*/
 			}
@@ -161,13 +160,13 @@ class GUI {
 				//die Figurenauswahl - kein leeres Feld UND die Figur muss deiner Farbe entsprechen
 				if(f.getBelegung() != Field.emptyField && g1.brett.getFigures()[f.getBelegung()].getIW() == pIsWhite){
 					
-					g1.brett.selectFigur(((Field)arg0.getSource()).getKoordinate());
-					List<Point2D> liste = g1.brett.checkFilteredMovePossibilities(g1.getPlayer()[player].getIsWhite());
+					g1.brett.selectFigur(f.getKoordinate());
+					List<Point2D> liste = g1.brett.checkFilteredMovePossibilities(pIsWhite);
 					
 					hightlightPos(liste);
 				}
 				//die Positionsauswahl - das ausgewaehlte Feld muss einer Bewegungsmoeglichkeit der selektierten Figur entsprechen
-				else if(g1.brett.checkFilteredMovePossibilities(pIsWhite).contains(f.getKoordinate())){
+				else if(pIsWhite == g1.brett.getFigures()[g1.brett.getSelFig()].getIW() && g1.brett.checkFilteredMovePossibilities(pIsWhite).contains(f.getKoordinate())){
 					
 					g1.brett.move(f.getKoordinate());
 					
@@ -336,10 +335,7 @@ class GUI {
 	 */
 	public void checkForEnd(){
 		
-		if(g1.brett.pP != 50){
-			g1.brett.promotePawn(whiteTurn);
-		}
-		else if(g1.brett.SchachMatt(!whiteTurn)){
+		if(g1.brett.SchachMatt(!whiteTurn)){
 			g1.Win(whiteTurn);
 			JOptionPane.showMessageDialog(mainFrame, "Checkmate!");
 			makeNonResponsive();
