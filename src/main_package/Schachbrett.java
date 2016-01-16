@@ -613,7 +613,6 @@ public class Schachbrett {
 	/**
 	 * eine uebergebene Liste wird gefiltert, damit keine schacherzeugenden Bewegungen
 	 * mehr vorhanden sind
-	 * @param moves die zu filternde Bewegungsliste
 	 * @param iW die Teamfarbe der Figur
 	 * @return die gefilterte 
 	 */

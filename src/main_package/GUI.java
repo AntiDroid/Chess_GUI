@@ -164,19 +164,7 @@ class GUI {
 
 					whiteTurn = !whiteTurn;
 				}
-				
-				int kingID = 0;
-				
-				if(g1.brett.getWhiteChecK())
-					kingID = 14;
-				else if(g1.brett.getBlackChecK())
-					kingID = 30;
-				
-				if(kingID != 0){
-					Point2D king = g1.brett.searchFigCoordByIndex(kingID);
-					g1.brett.getFelder()[(int)king.getX()][(int)king.getY()].setBackground(Color.RED);
-				}
-				
+				highlightCheck();
 			}
 
 			@Override
@@ -359,6 +347,25 @@ class GUI {
 			g1.Remis();
 			JOptionPane.showMessageDialog(mainFrame, "Patt!");
 			makeNonResponsive();
+		}
+		
+	}
+	
+	/**
+	 * das Feld des Kings, welcher im Schach steht, rot machen
+	 */
+	public void highlightCheck(){
+		
+		int kingID = 0;
+		
+		if(g1.brett.getWhiteChecK())
+			kingID = 14;
+		else if(g1.brett.getBlackChecK())
+			kingID = 30;
+		
+		if(kingID != 0){
+			Point2D king = g1.brett.searchFigCoordByIndex(kingID);
+			g1.brett.getFelder()[(int)king.getX()][(int)king.getY()].setBackground(Color.RED);
 		}
 		
 	}
