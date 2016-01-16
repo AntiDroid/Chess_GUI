@@ -150,25 +150,28 @@ class GUI {
 				
 				//die Figurenauswahl - kein leeres Feld UND die Figur muss deiner Farbe entsprechen
 				if(belegung != Field.emptyField && g1.brett.getFigures()[belegung].getIW() == g1.getPlayer()[player].getIsWhite()){
+					
 					int previousFig = g1.brett.getSelFig();
+					
 					g1.brett.selectFigur(((Field)arg0.getSource()).getKoordinate());
 					List<Point2D> liste = g1.brett.filter(g1.brett.movePossibilities(), g1.getPlayer()[player].getIsWhite());
+					
 					if(g1.brett.getFigures()[g1.brett.getSelFig()].getIW() == g1.brett.getFigures()[previousFig].getIW())
-						clearPositions();
+						clearHightlights();
+					
 					hightlightPos(liste);
 				}
 				//die Positionsauswahl - das ausgewaehlte Feld muss einer Bewegungsmoeglichkeit der selektierten Figur entsprechen
-				else if(g1.brett.filter(g1.brett.movePossibilities(), g1.getPlayer()[player].getIsWhite()).contains(((Field)arg0.getSource()).getKoordinate())){
+				else if(g1.brett.getFigures()[g1.brett.getSelFig()].getIW() == g1.getPlayer()[player].getIsWhite()&& g1.brett.filter(g1.brett.movePossibilities(), g1.getPlayer()[player].getIsWhite()).contains(((Field)arg0.getSource()).getKoordinate())){
 					
 					g1.brett.move(((Field)arg0.getSource()).getKoordinate());
 					
 					checkForEnd();
+					clearHightlights();
 					update();
-					clearPositions();
-				
+
+					whiteTurn = !whiteTurn;
 					
-					gamePanel.repaint();
-					//whiteTurn = !whiteTurn;
 				}
 			}
 
@@ -270,7 +273,7 @@ class GUI {
 	/**
 	 * die highlights entfernen und das Spielfeld neu "bemalen"
 	 */
-	public void clearPositions(){
+	public void clearHightlights(){
 
 		for(int i = 0; i<8; i++){
 			for(int j = 0; j<8; j++){
@@ -309,6 +312,7 @@ class GUI {
 				}
 			}
 		}		
+		gamePanel.repaint();
 	}
 	
 	/**
