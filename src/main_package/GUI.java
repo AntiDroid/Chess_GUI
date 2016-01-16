@@ -76,7 +76,7 @@ class GUI {
                 "WHITE",
                 JOptionPane.PLAIN_MESSAGE);
 		
-		}while(name2.equals("") || !name2.matches("\\w+"));
+		}while(name2.equals("") || !name2.matches("\\w+") || name2.equals(name1));
 		
 		}
 		catch(NullPointerException n){
