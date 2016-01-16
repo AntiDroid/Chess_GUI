@@ -7,13 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -146,33 +141,42 @@ class GUI {
 				else
 					player = 0;
 				
-				int belegung = ((Field)arg0.getSource()).getBelegung();
+				clearHighlights();
+				
+				Boolean pIsWhite = g1.getPlayer()[player].getIsWhite();
+				Field f = ((Field)arg0.getSource());
 				
 				//die Figurenauswahl - kein leeres Feld UND die Figur muss deiner Farbe entsprechen
-				if(belegung != Field.emptyField && g1.brett.getFigures()[belegung].getIW() == g1.getPlayer()[player].getIsWhite()){
-					
-					int previousFig = g1.brett.getSelFig();
+				if(f.getBelegung() != Field.emptyField && g1.brett.getFigures()[f.getBelegung()].getIW() == pIsWhite){
 					
 					g1.brett.selectFigur(((Field)arg0.getSource()).getKoordinate());
-					List<Point2D> liste = g1.brett.filter(g1.brett.movePossibilities(), g1.getPlayer()[player].getIsWhite());
-					
-					if(g1.brett.getFigures()[g1.brett.getSelFig()].getIW() == g1.brett.getFigures()[previousFig].getIW())
-						clearHightlights();
+					List<Point2D> liste = g1.brett.checkFilteredMovePossibilities(g1.getPlayer()[player].getIsWhite());
 					
 					hightlightPos(liste);
 				}
 				//die Positionsauswahl - das ausgewaehlte Feld muss einer Bewegungsmoeglichkeit der selektierten Figur entsprechen
-				else if(g1.brett.getFigures()[g1.brett.getSelFig()].getIW() == g1.getPlayer()[player].getIsWhite()&& g1.brett.filter(g1.brett.movePossibilities(), g1.getPlayer()[player].getIsWhite()).contains(((Field)arg0.getSource()).getKoordinate())){
+				else if(g1.brett.checkFilteredMovePossibilities(pIsWhite).contains(f.getKoordinate())){
 					
-					g1.brett.move(((Field)arg0.getSource()).getKoordinate());
+					g1.brett.move(f.getKoordinate());
 					
-					checkForEnd();
-					clearHightlights();
 					update();
+					checkForEnd();
 
 					whiteTurn = !whiteTurn;
-					
 				}
+				
+				int kingID = 0;
+				
+				if(g1.brett.getWhiteChecK())
+					kingID = 14;
+				else if(g1.brett.getBlackChecK())
+					kingID = 30;
+				
+				if(kingID != 0){
+					Point2D king = g1.brett.searchFigCoordByIndex(kingID);
+					g1.brett.getFelder()[(int)king.getX()][(int)king.getY()].setBackground(Color.RED);
+				}
+				
 			}
 
 			@Override
@@ -273,27 +277,14 @@ class GUI {
 	/**
 	 * die highlights entfernen und das Spielfeld neu "bemalen"
 	 */
-	public void clearHightlights(){
+	public void clearHighlights(){
 
 		for(int i = 0; i<8; i++){
 			for(int j = 0; j<8; j++){
 				if(g1.brett.getFelder()[i][j].getIsWhite())
 					g1.brett.getFelder()[i][j].setBackground(Color.WHITE);
 				else
-					g1.brett.getFelder()[i][j].setBackground(Color.LIGHT_GRAY);
-				
-				int kingID = 0;
-				
-				if(g1.brett.getWhiteChecK())
-					kingID = 14;
-				else if(g1.brett.getBlackChecK())
-					kingID = 30;
-				
-				if(kingID != 0){
-					Point2D king = g1.brett.searchFigCoordByIndex(kingID);
-					g1.brett.getFelder()[(int)king.getX()][(int)king.getY()].setBackground(Color.RED);
-				}
-					
+					g1.brett.getFelder()[i][j].setBackground(Color.LIGHT_GRAY);				
 			}
 		}
 	}
@@ -308,7 +299,7 @@ class GUI {
 				fx.removeAll();
 				if(fx.getBelegung() != Field.emptyField){
 					fx.add(g1.brett.getFigures()[fx.getBelegung()].getImage());
-					g1.brett.getFigures()[fx.getBelegung()].image.setText(" ");
+					g1.brett.getFigures()[fx.getBelegung()].getImage().setText("");
 				}
 			}
 		}		

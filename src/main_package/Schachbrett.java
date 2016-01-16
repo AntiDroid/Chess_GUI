@@ -1,12 +1,6 @@
 package main_package;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import figures.Bishop;
@@ -623,11 +617,13 @@ public class Schachbrett {
 	 * @param iW die Teamfarbe der Figur
 	 * @return die gefilterte 
 	 */
-	public List<Point2D> filter(List<Point2D> moves, Boolean iW){
+	public List<Point2D> checkFilteredMovePossibilities(Boolean iW){
 		
 		Point2D realPos = posSelectedFig;
 		
 		int origBelegung;
+		
+		List<Point2D> moves = movePossibilities();
 		
 		Boolean remove;
 		
@@ -730,16 +726,20 @@ public class Schachbrett {
 			teamStart = 16;
 		}
 		
+		Point2D origCoord = posSelectedFig;
+		
 		for(int i = teamStart; i <= (teamStart+15); i++){
 			Point2D curCoord = searchFigCoordByIndex(i);
 			if(curCoord.equals(nonSelectable))
 				continue;
 				
 			selectFigur(curCoord);
-			if(filter(movePossibilities(), isW).size() != 0){
+			if(checkFilteredMovePossibilities(isW).size() != 0){
+				selectFigur(origCoord);
 				return false;
 			}
 		}
+		selectFigur(origCoord);
 		return true;	
 	}
 

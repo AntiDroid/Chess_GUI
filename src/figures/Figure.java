@@ -12,7 +12,7 @@ import javafx.geometry.Point2D;
 public abstract class Figure {
 	
 	private Point2D startPosition;
-	public JLabel image;
+	private JLabel image;
 	private Boolean isWhite;
 	private String name;
 	
