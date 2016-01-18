@@ -138,6 +138,7 @@ class GUI {
 		player2Panel = new JPanel();
 		player2Panel.setLayout(new BoxLayout(player2Panel, BoxLayout.PAGE_AXIS));
 		player2Panel.setBounds(900, 515, 450, 250);
+		player2Panel.setBackground(Color.green);
 		
 		player1 = new JLabel(g1.getPlayer()[0].getName());
 		player1.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -212,6 +213,15 @@ class GUI {
 					checkForEnd();
 
 					whiteTurn = !whiteTurn;
+					
+					if(whiteTurn){
+						player2Panel.setBackground(Color.green);
+						player1Panel.setBackground(null);
+					}
+					else{
+						player1Panel.setBackground(Color.green);
+						player2Panel.setBackground(null);
+					}
 				}
 				highlightCheck();
 			}
