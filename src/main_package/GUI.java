@@ -196,7 +196,7 @@ class GUI {
 					terminatedFig1.removeAll();
 					
 					for(int i = 0; i < g1.brett.getFigures().length; i++){
-						if(g1.brett.searchFigCoordByIndex(i) == g1.brett.nonSelectable){
+						if(g1.brett.searchFigCoordByIndex(i) == Schachbrett.nonSelectable){
 							img = g1.brett.getFigures()[i].getImage();
 							try {
 								bugFixIMG = new JLabel(new ImageIcon(ImageIO.read(new File("Figurenbilder/King_w.png"))));
