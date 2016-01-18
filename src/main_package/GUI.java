@@ -8,14 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -190,7 +186,7 @@ class GUI {
 					
 					g1.brett.move(f.getKoordinate());
 					
-					JLabel img, bugFixIMG;
+					JLabel img;
 					
 					terminatedFig2.removeAll();
 					terminatedFig1.removeAll();
@@ -198,30 +194,19 @@ class GUI {
 					for(int i = 0; i < g1.brett.getFigures().length; i++){
 						if(g1.brett.searchFigCoordByIndex(i) == Schachbrett.nonSelectable){
 							img = g1.brett.getFigures()[i].getImage();
-							try {
-								bugFixIMG = new JLabel(new ImageIcon(ImageIO.read(new File("Figurenbilder/King_w.png"))));
 
 							if(i<16){
 								terminatedFig2.add(img);
-								terminatedFig2.add(bugFixIMG);
+								terminatedFig2.revalidate();
 							}
 							else{
 								terminatedFig1.add(img);
-								terminatedFig1.add(bugFixIMG);
+								terminatedFig1.revalidate();
 							}
 							
 							img.setText("");
-							bugFixIMG.setText("");
-
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
 						}
 					}
-					
-					terminatedFig1.repaint();
-					terminatedFig2.repaint();
 					
 					update();
 					checkForEnd();
