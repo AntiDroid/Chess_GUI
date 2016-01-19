@@ -1,6 +1,7 @@
 package main_package;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.JOptionPane;
 
 import figures.Bishop;
@@ -233,9 +234,18 @@ public class Schachbrett {
 	 */
 	public void promotePawn(Boolean iW){
 		
+	
+		Boolean retry = true;;
 		String[] choices = {"Knight", "Rook", "Bishop", "Queen"};
-	    String input = (String) JOptionPane.showInputDialog(null, "Choose a figure!", "Promote your pawn!", JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
-			
+		String input = "lol";
+		
+		do{
+	    input = (String) JOptionPane.showInputDialog(null, "Choose a figure!", "Promote your pawn!", JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
+	    
+	    if(input == null)
+	    	continue;
+	    
+	    retry = false;
 		switch(input){
 		
 		case "Knight":
@@ -252,8 +262,8 @@ public class Schachbrett {
 		case "Queen":
 			Fig[selectedFig] = new Queen(iW, Fig[selectedFig].getSP());
 			break;
-			
 		}
+		}while(retry);
 	}
 
 	/**

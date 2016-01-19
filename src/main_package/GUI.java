@@ -140,11 +140,11 @@ class GUI {
 		player2Panel.setBounds(900, 515, 450, 250);
 		player2Panel.setBackground(Color.green);
 		
-		player1 = new JLabel(g1.getPlayer()[0].getName());
+		player1 = new JLabel("Player 1: "+g1.getPlayer()[0].getName());
 		player1.setAlignmentX(Component.CENTER_ALIGNMENT);
 		player1.setFont(new Font("Serif", Font.BOLD, 24));
 		
-		player2 = new JLabel(g1.getPlayer()[1].getName());
+		player2 = new JLabel("Player 2: "+g1.getPlayer()[1].getName());
 		player2.setAlignmentX(Component.CENTER_ALIGNMENT);
 		player2.setFont(new Font("Serif", Font.BOLD, 24));
 		
