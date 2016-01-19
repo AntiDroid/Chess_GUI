@@ -40,8 +40,10 @@ class GUI {
 	
 	JLabel time1Total, time2Total, time1Cur, time2Cur;
 	
-	Color bField = new Color(0, 102, 51);
-	Color wField = new Color(255, 255, 255);
+	Color bField = new Color(51, 102, 0);
+	Color wField = new Color(140, 255, 255);
+	Color turnColor = Color.yellow;
+	Color hightlightColor = Color.darkGray;
 	
 	/**
 	 * Reaktionen auf Eingaben im normalen Spielverlauf
@@ -129,7 +131,7 @@ class GUI {
 		gamePanel.setBounds(50, 25, 800, 770);
 		gamePanel.setBackground(Color.BLACK);
 		gamePanel.setLayout(new GridLayout(8, 8, 3, 3));
-		gamePanel.setBorder(BorderFactory.createEmptyBorder( 5, 5, 5, 5));
+		gamePanel.setBorder(BorderFactory.createEmptyBorder( 7, 7, 7, 7));
 		
 		player1Panel = new JPanel();
 		player1Panel.setLayout(new BoxLayout(player1Panel, BoxLayout.PAGE_AXIS));
@@ -138,7 +140,7 @@ class GUI {
 		player2Panel = new JPanel();
 		player2Panel.setLayout(new BoxLayout(player2Panel, BoxLayout.PAGE_AXIS));
 		player2Panel.setBounds(900, 515, 450, 250);
-		player2Panel.setBackground(Color.green);
+		player2Panel.setBackground(turnColor);
 		
 		player1 = new JLabel("Player 1: "+g1.getPlayer()[0].getName());
 		player1.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -215,11 +217,11 @@ class GUI {
 					whiteTurn = !whiteTurn;
 					
 					if(whiteTurn){
-						player2Panel.setBackground(Color.green);
+						player2Panel.setBackground(turnColor);
 						player1Panel.setBackground(null);
 					}
 					else{
-						player1Panel.setBackground(Color.green);
+						player1Panel.setBackground(turnColor);
 						player2Panel.setBackground(null);
 					}
 				}
@@ -320,7 +322,7 @@ class GUI {
 		for(int i = 0; i<8; i++){
 			for(int j = 0; j<8; j++){
 				if(list.contains(g1.brett.getFelder()[i][j].getKoordinate()))
-					g1.brett.getFelder()[i][j].setBackground(Color.cyan);
+					g1.brett.getFelder()[i][j].setBackground(hightlightColor);
 			}
 		}
 	}
