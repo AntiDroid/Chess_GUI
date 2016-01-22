@@ -1,6 +1,5 @@
 package main_package;
-import java.util.ArrayList;
-import java.util.List;
+import javax.swing.JOptionPane;
 
 
 public class Game {
@@ -8,9 +7,7 @@ public class Game {
 	public Schachbrett brett;
 	private int winner;
 	private Player[] p;
-	private int totalGameDur;
-	
-	private static List<Game> gameHistory = new ArrayList<Game>();
+	private Boolean whiteTurn;
 	
 	public Game(Player p1, Player p2){
 		
@@ -18,8 +15,8 @@ public class Game {
 		p[0] = p1;
 		p[1] = p2;
 		winner = 10;
-		totalGameDur = 0;
 		this.brett = new Schachbrett();
+		whiteTurn = true;
 	}
 	
 	public Player[] getPlayer(){
@@ -36,25 +33,21 @@ public class Game {
 		else
 			winner = 1;
 	
-		gameHistory.add(this);
+		JOptionPane.showMessageDialog(null, p[winner].getName()+" won!");
 	}
 	
 	/**
 	 * Unentschieden durch Patt oder 1v1 King Situationen automatisch aufgerufen.
 	 */
 	public void Remis() {
-		gameHistory.add(this);
+		JOptionPane.showMessageDialog(null, "Remis!");
 	}
 	
-	/**
-	 * Ausgabemethode eines einzelnen Spieles
-	 */
-	public String toString(){
-		String str = p[0].getName()+" vs " + p[1].getName()+"\n*************\n";
-		if(winner != 10)
-			str += p[winner].getName()+" won\n*************\n";
-		str += "The game took"+Math.round((double)totalGameDur/60.0)+"seconds!\n\n";
-		
-		return str;
+	public Boolean getWhiteTurn() {
+		return whiteTurn;
+	}
+
+	public void setWhiteTurn(Boolean whiteTurn) {
+		this.whiteTurn = whiteTurn;
 	}
 }

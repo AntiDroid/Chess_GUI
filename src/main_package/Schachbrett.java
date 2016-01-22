@@ -513,14 +513,17 @@ public class Schachbrett {
 		else if(this.Fig[selectedFig] instanceof King){
 			
 			int rochRookL, rochRookR;
+			Boolean check;
 			
 			if(Fig[selectedFig].getIW()){
 				rochRookL = 0;
 				rochRookR = 1;
+				check = whiteCheck;
 			}
 			else{
 				rochRookL = 16;
 				rochRookR = 17;
+				check = blackCheck;
 			}
 			
 			//rechts
@@ -544,17 +547,19 @@ public class Schachbrett {
 			moveP.addAll(moveCrap(x, y, 1, 1, x+2, y+2));
 			
 			
-			//Rochade		
-			//rechts
-			if( ((King)Fig[selectedFig]).getRochade() && ((Rook)Fig[rochRookR]).getRochade() ){
-				if((this.felder[(x+2)][y].getBelegung() == Field.emptyField) && this.felder[(x+1)][y].getBelegung() == Field.emptyField){
-					moveP.add(new Point2D((x+2), y));
+			if(!check){
+				//Rochade		
+				//rechts
+				if( ((King)Fig[selectedFig]).getRochade() && ((Rook)Fig[rochRookR]).getRochade() ){
+					if((this.felder[(x+2)][y].getBelegung() == Field.emptyField) && this.felder[(x+1)][y].getBelegung() == Field.emptyField){
+						moveP.add(new Point2D((x+2), y));
+					}
 				}
-			}
-			//links
-			if( ((King)Fig[selectedFig]).getRochade() && ((Rook)Fig[rochRookL]).getRochade() ){
-				if((this.felder[(x-3)][y].getBelegung() == Field.emptyField) && (this.felder[(x-2)][y].getBelegung() == Field.emptyField) && (this.felder[(x-1)][y].getBelegung() == Field.emptyField)){
-					moveP.add(new Point2D((x-2), y));
+				//links
+				if( ((King)Fig[selectedFig]).getRochade() && ((Rook)Fig[rochRookL]).getRochade() ){
+					if((this.felder[(x-3)][y].getBelegung() == Field.emptyField) && (this.felder[(x-2)][y].getBelegung() == Field.emptyField) && (this.felder[(x-1)][y].getBelegung() == Field.emptyField)){
+						moveP.add(new Point2D((x-2), y));
+					}
 				}
 			}
 		}

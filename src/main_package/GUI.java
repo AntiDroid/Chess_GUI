@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -25,8 +26,6 @@ import javafx.geometry.Point2D;
 class GUI {
 
 	Game g1;
-	
-	Boolean whiteTurn = true;
 	int player;
 	String name1, name2;
 	
@@ -37,8 +36,9 @@ class GUI {
 	JPanel gamePanel, player1Panel, player2Panel;
 	JPanel terminatedFig1, terminatedFig2;
 	JLabel player1, player2;
+	JLabel time1Cur, time2Cur;
 	
-	JLabel time1Total, time2Total, time1Cur, time2Cur;
+	Thread t1, t2;
 	
 	Color bField = new Color(51, 102, 0);
 	Color wField = new Color(140, 255, 255);
@@ -73,7 +73,10 @@ class GUI {
                 "BLACK",
                 JOptionPane.PLAIN_MESSAGE);
 		
-		}while(name1.equals("") || !name1.matches("\\w+"));
+		if(name1.equals(""))
+			throw new NullPointerException();
+		
+		}while(!name1.matches("\\w+"));
 		
 		}
 		catch(NullPointerException n){
@@ -86,6 +89,9 @@ class GUI {
 		name2 = JOptionPane.showInputDialog(null, "Enter your name!",
                 "WHITE",
                 JOptionPane.PLAIN_MESSAGE);
+		
+		if(name2.equals(""))
+			throw new NullPointerException();
 		
 		}while(name2.equals("") || !name2.matches("\\w+") || name2.equals(name1));
 		
@@ -104,25 +110,25 @@ class GUI {
 		menu1 = new JMenu("Game");
 		
 		mItem1 = new JMenuItem("New");
-		
 		mItem1.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				g1 = new Game(new Player(name1, false), new Player(name2, true));	
 				
-
+				gamePanel.removeAll();
+				setUpGame();
+				updateVisual();
 			}
 			
 		});
-		
-		
-		mItem2 = new JMenuItem("Remis");
+			
+		mItem2 = new JMenuItem("Give Up");
 		mItem2.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				g1.Remis();
-				JOptionPane.showMessageDialog(mainFrame, "Remis was manually triggered!");
+				g1.Win(g1.getWhiteTurn());
 				makeNonResponsive();
 			}
 		});
@@ -136,10 +142,13 @@ class GUI {
 		player1Panel = new JPanel();
 		player1Panel.setLayout(new BoxLayout(player1Panel, BoxLayout.PAGE_AXIS));
 		player1Panel.setBounds(900, 50, 450, 250);
+		player1Panel.setBorder(BorderFactory.createEmptyBorder( 7, 7, 7, 7));
+		player1Panel.setBackground(Color.white);
 		
 		player2Panel = new JPanel();
 		player2Panel.setLayout(new BoxLayout(player2Panel, BoxLayout.PAGE_AXIS));
 		player2Panel.setBounds(900, 515, 450, 250);
+		player2Panel.setBorder(BorderFactory.createEmptyBorder( 7, 7, 7, 7));
 		player2Panel.setBackground(turnColor);
 		
 		player1 = new JLabel("Player 1: "+g1.getPlayer()[0].getName());
@@ -152,21 +161,24 @@ class GUI {
 		
 		terminatedFig1 = new JPanel();
 		terminatedFig1.setLayout(new GridLayout(2, 8, 0, 0));
-		
+	
 		terminatedFig2 = new JPanel();
 		terminatedFig2.setLayout(new GridLayout(2, 8, 0, 0));
 		
-		time1Total = new JLabel();
-		time2Total = new JLabel();
-		time1Cur = new JLabel();
-		time2Cur = new JLabel();
+		time1Cur = new JLabel("Time 1");
+		time1Cur.setAlignmentX(Component.CENTER_ALIGNMENT);
+		time1Cur.setFont(new Font("Serif", Font.BOLD, 20));
+		
+		time2Cur = new JLabel("Time 2");
+		time2Cur.setAlignmentX(Component.CENTER_ALIGNMENT);
+		time2Cur.setFont(new Font("Serif", Font.BOLD, 20));
 
 		Func = new MouseListener(){
 
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
-				if(whiteTurn)
+				if(g1.getWhiteTurn())
 					player = 1;
 				else
 					player = 0;
@@ -199,33 +211,23 @@ class GUI {
 							img = g1.brett.getFigures()[i].getImage();
 
 							if(i<16){
-								terminatedFig2.add(img);
-								terminatedFig2.revalidate();
-							}
-							else{
 								terminatedFig1.add(img);
 								terminatedFig1.revalidate();
+							}
+							else{
+								terminatedFig2.add(img);
+								terminatedFig2.revalidate();
 							}
 							
 							img.setText("");
 						}
 					}
 					
-					update();
+					highlightCheck();
+					updateVisual();
 					checkForEnd();
-
-					whiteTurn = !whiteTurn;
-					
-					if(whiteTurn){
-						player2Panel.setBackground(turnColor);
-						player1Panel.setBackground(null);
-					}
-					else{
-						player1Panel.setBackground(turnColor);
-						player2Panel.setBackground(null);
-					}
+					g1.setWhiteTurn(!g1.getWhiteTurn());
 				}
-				highlightCheck();
 			}
 
 			@Override
@@ -279,30 +281,52 @@ class GUI {
 			
 			
 		};
+	
+		setUpGame();
 		
-		for(int y = 0; y<8; y++) {
-			for(int x = 0; x<8; x++) {
-				Field f = g1.brett.getFelder()[x][y];
+		t2 = new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				Date d = new Date();
 				
-				if(f.getIsWhite())
-					f.setBackground(wField);
-				else
-					f.setBackground(bField);
+				while(g1.getWhiteTurn()){
+					time2Cur.setText(String.valueOf((new Date().getTime()-d.getTime())/1000)+"s");
+				}
 				
-				f.addMouseListener(Func);
-				gamePanel.add(f);
+				System.out.println("ENDE FUER WEISS");
 			}
-		}
+			
+		});
+		
+		t1 = new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				Date d = new Date();
+				
+				while(!g1.getWhiteTurn()){
+					time1Cur.setText(String.valueOf((new Date().getTime()-d.getTime())/1000)+"s");
+				}
+				
+				System.out.println("ENDE FUER SCHWARZ");
+			}
+			
+		});
+		//t2.start();
 		
 		player1Panel.add(player1);
 		player1Panel.add(terminatedFig1);
+		player1Panel.add(time1Cur);
 		player2Panel.add(player2);
 		player2Panel.add(terminatedFig2);
+		player2Panel.add(time2Cur);
 		
 		mainFrame.setJMenuBar(menuBar);
 		mainFrame.add(gamePanel);
 		mainFrame.add(player1Panel);
 		mainFrame.add(player2Panel);
+		
 		menuBar.add(menu1);
 		menu1.add(mItem1);
 		menu1.add(mItem2);
@@ -328,6 +352,30 @@ class GUI {
 	}
 	
 	/**
+	 * Initialisieren des Feldes am Anfang jedes Spieles
+	 */
+	public void setUpGame(){
+		
+		terminatedFig1.removeAll();
+		terminatedFig2.removeAll();
+		
+		for(int y = 0; y<8; y++) {
+			for(int x = 0; x<8; x++) {
+				Field f = g1.brett.getFelder()[x][y];
+				
+				if(f.getIsWhite())
+					f.setBackground(wField);
+				else
+					f.setBackground(bField);
+				
+				f.addMouseListener(Func);
+				gamePanel.add(f);
+			}
+		}
+		
+	}
+	
+	/**
 	 * die highlights entfernen und das Spielfeld neu "bemalen"
 	 */
 	public void clearHighlights(){
@@ -345,7 +393,7 @@ class GUI {
 	/**
 	 * die Felder neu mit den Figurenbildern initialisieren
 	 */
-	public void update(){
+	public void updateVisual(){
 		
 		for(Field[] f: g1.brett.getFelder()){
 			for(Field fx: f){
@@ -356,6 +404,16 @@ class GUI {
 				}
 			}
 		}		
+		
+		if(g1.getWhiteTurn()){
+			player2Panel.setBackground(turnColor);
+			player1Panel.setBackground(Color.white);
+		}
+		else{
+			player1Panel.setBackground(turnColor);
+			player2Panel.setBackground(Color.white);
+		}
+		
 		gamePanel.repaint();
 	}
 	
@@ -389,24 +447,24 @@ class GUI {
 	 */
 	public void checkForEnd(){
 		
-		if(g1.brett.SchachMatt(!whiteTurn)){
-			g1.Win(whiteTurn);
-			JOptionPane.showMessageDialog(mainFrame, "Checkmate!");
+		if(g1.brett.SchachMatt(!g1.getWhiteTurn())){
+			JOptionPane.showMessageDialog(null, "Checkmate!");
+			g1.Win(g1.getWhiteTurn());
 			makeNonResponsive();
 		}
-		else if(g1.brett.Patt(!whiteTurn)){
+		else if(g1.brett.Patt(!g1.getWhiteTurn())){
+			JOptionPane.showMessageDialog(null, "Patt!");
 			g1.Remis();
-			JOptionPane.showMessageDialog(mainFrame, "Patt!");
 			makeNonResponsive();
 		}     
-		else if(g1.brett.Patt(whiteTurn)){
+		else if(g1.brett.Patt(g1.getWhiteTurn())){
+			JOptionPane.showMessageDialog(null, "Patt!");
 			g1.Remis();
-			JOptionPane.showMessageDialog(mainFrame, "Patt!");
 			makeNonResponsive();
 		}
 		else if(g1.brett.king1v1()){
+			JOptionPane.showMessageDialog(null, "King vs King Situation!");
 			g1.Remis();
-			JOptionPane.showMessageDialog(mainFrame, "Patt!");
 			makeNonResponsive();
 		}
 		
@@ -426,9 +484,8 @@ class GUI {
 		
 		if(kingID != 0){
 			Point2D king = g1.brett.searchFigCoordByIndex(kingID);
-			g1.brett.getFelder()[(int)king.getX()][(int)king.getY()].setBackground(Color.RED);
+			g1.brett.getFelder()[(int)king.getX()][(int)king.getY()].setBackground(Color.MAGENTA);
 		}
-		
 	}
 	
 	}
