@@ -33,7 +33,7 @@ public class Game {
 		else
 			winner = 1;
 	
-		JOptionPane.showMessageDialog(null, p[winner].getName()+" won!");
+		JOptionPane.showMessageDialog(null, p[winner].getName()+" has won!");
 	}
 	
 	/**
