@@ -25,7 +25,7 @@ import javafx.geometry.Point2D;
 
 class GUI {
 
-	Game g1;
+	Game curGame;
 	int player;
 	String name1, name2;
 	
@@ -100,7 +100,7 @@ class GUI {
 			name2 = "Player 2";
 		}
 		
-		g1 = new Game(new Player(name1, false), new Player(name2, true));
+		curGame = new Game(new Player(name1, false), new Player(name2, true));
 		
 		mainFrame = new JFrame("Chess");
 		mainFrame.setBounds(400, 100, 1400, 900);
@@ -114,7 +114,7 @@ class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				g1 = new Game(new Player(name1, false), new Player(name2, true));	
+				curGame = new Game(new Player(name1, false), new Player(name2, true));	
 				
 				gamePanel.removeAll();
 				setUpGame();
@@ -128,8 +128,8 @@ class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				g1.Win(g1.getWhiteTurn());
-				makeNonResponsive();
+				curGame.Win(!curGame.getWhiteTurn());
+				makeResponsive(false);
 			}
 		});
 		
@@ -151,11 +151,11 @@ class GUI {
 		player2Panel.setBorder(BorderFactory.createEmptyBorder( 7, 7, 7, 7));
 		player2Panel.setBackground(turnColor);
 		
-		player1 = new JLabel("Player 1: "+g1.getPlayer()[0].getName());
+		player1 = new JLabel("Player 1: "+curGame.getPlayer()[0].getName());
 		player1.setAlignmentX(Component.CENTER_ALIGNMENT);
 		player1.setFont(new Font("Serif", Font.BOLD, 24));
 		
-		player2 = new JLabel("Player 2: "+g1.getPlayer()[1].getName());
+		player2 = new JLabel("Player 2: "+curGame.getPlayer()[1].getName());
 		player2.setAlignmentX(Component.CENTER_ALIGNMENT);
 		player2.setFont(new Font("Serif", Font.BOLD, 24));
 		
@@ -178,37 +178,37 @@ class GUI {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
-				if(g1.getWhiteTurn())
+				if(curGame.getWhiteTurn())
 					player = 1;
 				else
 					player = 0;
 				
-				clearHighlights();
+				clearMoveHighlights();
 				
-				Boolean pIsWhite = g1.getPlayer()[player].getIsWhite();
+				Boolean pIsWhite = curGame.getPlayer()[player].getIsWhite();
 				Field f = ((Field)arg0.getSource());
 				
 				//die Figurenauswahl - kein leeres Feld UND die Figur muss deiner Farbe entsprechen
-				if(f.getBelegung() != Field.emptyField && g1.brett.getFigures()[f.getBelegung()].getIW() == pIsWhite){
+				if(f.getBelegung() != Field.emptyField && curGame.brett.getFigures()[f.getBelegung()].getIW() == pIsWhite){
 					
-					g1.brett.selectFigur(f.getKoordinate());
-					List<Point2D> liste = g1.brett.checkFilteredMovePossibilities(pIsWhite);
+					curGame.brett.selectFigur(f.getKoordinate());
+					List<Point2D> liste = curGame.brett.checkFilteredMovePossibilities(pIsWhite);
 					
 					hightlightPos(liste);
 				}
 				//die Positionsauswahl - das ausgewaehlte Feld muss einer Bewegungsmoeglichkeit der selektierten Figur entsprechen
-				else if(pIsWhite == g1.brett.getFigures()[g1.brett.getSelFig()].getIW() && g1.brett.checkFilteredMovePossibilities(pIsWhite).contains(f.getKoordinate())){
+				else if(pIsWhite == curGame.brett.getFigures()[curGame.brett.getSelFig()].getIW() && curGame.brett.checkFilteredMovePossibilities(pIsWhite).contains(f.getKoordinate())){
 					
-					g1.brett.move(f.getKoordinate());
+					curGame.brett.move(f.getKoordinate());
 					
 					JLabel img;
-					
+					    
 					terminatedFig2.removeAll();
 					terminatedFig1.removeAll();
 					
-					for(int i = 0; i < g1.brett.getFigures().length; i++){
-						if(g1.brett.searchFigCoordByIndex(i) == Schachbrett.nonSelectable){
-							img = g1.brett.getFigures()[i].getImage();
+					for(int i = 0; i < curGame.brett.getFigures().length; i++){
+						if(curGame.brett.searchFigCoordByIndex(i) == Schachbrett.nonSelectable){
+							img = curGame.brett.getFigures()[i].getImage();
 
 							if(i<16){
 								terminatedFig1.add(img);
@@ -223,11 +223,12 @@ class GUI {
 						}
 					}
 					
-					highlightCheck();
+					clearMoveHighlights();
 					updateVisual();
 					checkForEnd();
-					g1.setWhiteTurn(!g1.getWhiteTurn());
+					curGame.setWhiteTurn(!curGame.getWhiteTurn());
 				}
+				updateVisual();
 			}
 
 			@Override
@@ -290,7 +291,7 @@ class GUI {
 			public void run() {
 				Date d = new Date();
 				
-				while(g1.getWhiteTurn()){
+				while(curGame.getWhiteTurn()){
 					time2Cur.setText(String.valueOf((new Date().getTime()-d.getTime())/1000)+"s");
 				}
 				
@@ -305,7 +306,7 @@ class GUI {
 			public void run() {
 				Date d = new Date();
 				
-				while(!g1.getWhiteTurn()){
+				while(!curGame.getWhiteTurn()){
 					time1Cur.setText(String.valueOf((new Date().getTime()-d.getTime())/1000)+"s");
 				}
 				
@@ -338,20 +339,6 @@ class GUI {
 	}
 
 	/**
-	 * highlights auf Feldern erzeugen auf die man sich bewegen kann
-	 * @param list Felder auf die man sich bewegen kann
-	 */
-	public void hightlightPos(List<Point2D> list){
-		
-		for(int i = 0; i<8; i++){
-			for(int j = 0; j<8; j++){
-				if(list.contains(g1.brett.getFelder()[i][j].getKoordinate()))
-					g1.brett.getFelder()[i][j].setBackground(hightlightColor);
-			}
-		}
-	}
-	
-	/**
 	 * Initialisieren des Feldes am Anfang jedes Spieles
 	 */
 	public void setUpGame(){
@@ -361,7 +348,7 @@ class GUI {
 		
 		for(int y = 0; y<8; y++) {
 			for(int x = 0; x<8; x++) {
-				Field f = g1.brett.getFelder()[x][y];
+				Field f = curGame.brett.getFelder()[x][y];
 				
 				if(f.getIsWhite())
 					f.setBackground(wField);
@@ -376,18 +363,60 @@ class GUI {
 	}
 	
 	/**
+	 * das Feld des Kings, welcher im Schach steht, rot machen
+	 */
+	public void highlightCheck(){
+		
+		int kingID = 0;
+		
+		if(curGame.brett.getWhiteChecK())
+			kingID = 14;
+		else if(curGame.brett.getBlackChecK())
+			kingID = 30;
+		
+		if(kingID != 0){
+			Point2D king = curGame.brett.searchFigCoordByIndex(kingID);
+			curGame.brett.getFelder()[(int)king.getX()][(int)king.getY()].setBackground(Color.MAGENTA);
+		}
+	}
+
+	/**
+	 * highlights auf Feldern erzeugen auf die man sich bewegen kann
+	 * @param list Felder auf die man sich bewegen kann
+	 */
+	public void hightlightPos(List<Point2D> list){
+		
+		for(int i = 0; i<8; i++){
+			for(int j = 0; j<8; j++){
+				if(list.contains(curGame.brett.getFelder()[i][j].getKoordinate()))
+					curGame.brett.getFelder()[i][j].setBackground(hightlightColor);
+			}
+		}
+	}
+
+	public void crap(Boolean clear, Boolean highlight){
+		for(int i = 0; i < 8; i++){
+			for(int j = 0; i < 8; j++){
+				
+			}
+		}
+	}
+	
+	/**
 	 * die highlights entfernen und das Spielfeld neu "bemalen"
 	 */
-	public void clearHighlights(){
+	public void clearMoveHighlights(){
 
 		for(int i = 0; i<8; i++){
 			for(int j = 0; j<8; j++){
-				if(g1.brett.getFelder()[i][j].getIsWhite())
-					g1.brett.getFelder()[i][j].setBackground(wField);
+				if(curGame.brett.getFelder()[i][j].getIsWhite())
+					curGame.brett.getFelder()[i][j].setBackground(wField);
 				else
-					g1.brett.getFelder()[i][j].setBackground(bField);				
+					curGame.brett.getFelder()[i][j].setBackground(bField);				
 			}
 		}
+		
+		highlightCheck();
 	}
 	
 	/**
@@ -395,17 +424,17 @@ class GUI {
 	 */
 	public void updateVisual(){
 		
-		for(Field[] f: g1.brett.getFelder()){
+		for(Field[] f: curGame.brett.getFelder()){
 			for(Field fx: f){
 				fx.removeAll();
 				if(fx.getBelegung() != Field.emptyField){
-					fx.add(g1.brett.getFigures()[fx.getBelegung()].getImage());
-					g1.brett.getFigures()[fx.getBelegung()].getImage().setText("");
+					fx.add(curGame.brett.getFigures()[fx.getBelegung()].getImage());
+					curGame.brett.getFigures()[fx.getBelegung()].getImage().setText("");
 				}
 			}
 		}		
 		
-		if(g1.getWhiteTurn()){
+		if(curGame.getWhiteTurn()){
 			player2Panel.setBackground(turnColor);
 			player1Panel.setBackground(Color.white);
 		}
@@ -421,22 +450,13 @@ class GUI {
 	 * wenn das Feld nicht mehr auf Eingaben reagiert,
 	 * wird es hiermit wiederhergestellt
 	 */
-	public void makeResponsive(){
-		for(Field[] f: g1.brett.getFelder()){
+	public void makeResponsive(Boolean respond){
+		for(Field[] f: curGame.brett.getFelder()){
 			for(Field fx: f){
-				if(fx.getBelegung() != Field.emptyField)
+				if(respond)
 					fx.addMouseListener(Func);
-			}
-		}
-	}
-	
-	/**
-	 * dem Spielfeld die Klick-Funktionen nehmen
-	 */
-	public void makeNonResponsive(){
-		for(Field[] f: g1.brett.getFelder()){
-			for(Field fx: f){
-				fx.addMouseListener(noFunc);
+				else
+					fx.addMouseListener(noFunc);
 			}
 		}
 	}
@@ -447,45 +467,27 @@ class GUI {
 	 */
 	public void checkForEnd(){
 		
-		if(g1.brett.SchachMatt(!g1.getWhiteTurn())){
+		if(curGame.brett.SchachMatt(!curGame.getWhiteTurn())){
 			JOptionPane.showMessageDialog(null, "Checkmate!");
-			g1.Win(g1.getWhiteTurn());
-			makeNonResponsive();
+			curGame.Win(curGame.getWhiteTurn());
+			makeResponsive(false);
 		}
-		else if(g1.brett.Patt(!g1.getWhiteTurn())){
+		else if(curGame.brett.Patt(!curGame.getWhiteTurn())){
 			JOptionPane.showMessageDialog(null, "Patt!");
-			g1.Remis();
-			makeNonResponsive();
+			curGame.Remis();
+			makeResponsive(false);
 		}     
-		else if(g1.brett.Patt(g1.getWhiteTurn())){
+		else if(curGame.brett.Patt(curGame.getWhiteTurn())){
 			JOptionPane.showMessageDialog(null, "Patt!");
-			g1.Remis();
-			makeNonResponsive();
+			curGame.Remis();
+			makeResponsive(false);
 		}
-		else if(g1.brett.king1v1()){
+		else if(curGame.brett.king1v1()){
 			JOptionPane.showMessageDialog(null, "King vs King Situation!");
-			g1.Remis();
-			makeNonResponsive();
+			curGame.Remis();
+			makeResponsive(false);
 		}
 		
-	}
-	
-	/**
-	 * das Feld des Kings, welcher im Schach steht, rot machen
-	 */
-	public void highlightCheck(){
-		
-		int kingID = 0;
-		
-		if(g1.brett.getWhiteChecK())
-			kingID = 14;
-		else if(g1.brett.getBlackChecK())
-			kingID = 30;
-		
-		if(kingID != 0){
-			Point2D king = g1.brett.searchFigCoordByIndex(kingID);
-			g1.brett.getFelder()[(int)king.getX()][(int)king.getY()].setBackground(Color.MAGENTA);
-		}
 	}
 	
 	}

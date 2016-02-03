@@ -28,7 +28,7 @@ public class Game {
 	 * @param isWhite welches Team gewonnen hat
 	 */
 	public void Win(Boolean isWhite){
-		if(p[1].getIsWhite() == isWhite)
+		if(p[0].getIsWhite() == isWhite)
 			winner = 0;
 		else
 			winner = 1;
