@@ -416,11 +416,6 @@ class GUI {
 			curGame.Remis();
 			makeResponsive(false);
 		}     
-		else if(curGame.brett.Patt(curGame.getWhiteTurn())){
-			JOptionPane.showMessageDialog(null, "Patt!");
-			curGame.Remis();
-			makeResponsive(false);
-		}
 		else if(curGame.brett.king1v1()){
 			JOptionPane.showMessageDialog(null, "King vs King Situation!");
 			curGame.Remis();
