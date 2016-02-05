@@ -376,6 +376,7 @@ class GUI {
 		
 		highlightCheck();
 		gamePanel.repaint();
+		gamePanel.validate();
 	}
 	
 	/**
