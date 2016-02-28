@@ -2,19 +2,19 @@ package main_package;
 
 import javax.swing.JPanel;
 
-import javafx.geometry.Point2D;
+import utilities.Point;
 
 class Field extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
 	private int belegung;
-	private Point2D koordinate;
+	private Point koordinate;
 	private Boolean isWhite;
 	
 	static final int emptyField = 99;
 	
-	public Field(Point2D koord, Boolean iW){
+	public Field(Point koord, Boolean iW){
 		belegung = emptyField;
 		this.koordinate = koord;
 		this.isWhite = iW;
@@ -30,7 +30,7 @@ class Field extends JPanel {
 		return this.isWhite;
 	}
 	
-	public Point2D getKoordinate(){
+	public Point getKoordinate(){
 		
 		return this.koordinate;
 	}

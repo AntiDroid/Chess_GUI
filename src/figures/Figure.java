@@ -6,12 +6,11 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import javafx.geometry.Point2D;
-
+import utilities.Point;
 
 public abstract class Figure {
 	
-	private Point2D startPosition;
+	private Point startPosition;
 	private JLabel image;
 	private Boolean isWhite;
 	private String name;
@@ -23,7 +22,7 @@ public abstract class Figure {
 	 * @param fP filePath des Figurenbildes
 	 * @param n Name der Figur
 	 */
-	public Figure(Point2D sP, Boolean isW, String fP, String n){
+	public Figure(Point sP, Boolean isW, String fP, String n){
 		
 		name = n;
 		isWhite = isW;
@@ -51,11 +50,11 @@ public abstract class Figure {
 		return name;
 	}
 	
-	public void setSP(Point2D point){
+	public void setSP(Point point){
 		this.startPosition = point;
 	}
 	
-	public Point2D getSP(){
+	public Point getSP(){
 		
 		return startPosition;
 	}

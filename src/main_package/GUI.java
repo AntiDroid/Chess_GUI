@@ -20,7 +20,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import javafx.geometry.Point2D;
+import utilities.Point;
 
 class GUI {
 
@@ -176,7 +176,7 @@ class GUI {
 				if(f.getBelegung() != Field.emptyField && curGame.brett.getFigures()[f.getBelegung()].getIW() == pIsWhite){
 					
 					curGame.brett.selectFigur(f.getKoordinate());
-					List<Point2D> liste = curGame.brett.checkFilteredMovePossibilities(pIsWhite);
+					List<Point> liste = curGame.brett.checkFilteredMovePossibilities(pIsWhite);
 					
 					hightlightPos(liste, f.getKoordinate());
 				}
@@ -189,7 +189,7 @@ class GUI {
 					terminatedFig1.removeAll();
 					
 					for(int i = 0; i < curGame.brett.getFigures().length; i++){
-						if(curGame.brett.searchFigCoordByIndex(i) == Schachbrett.nonSelectable){
+						if(curGame.brett.searchFigCoordByIndex(i) == Schachbrett.NO_FIG_COORD){
 
 							if(i<16){
 								terminatedFig1.add(curGame.brett.getFigures()[i].getImage());
@@ -331,7 +331,7 @@ class GUI {
 			kingID = 30;
 		
 		if(kingID != 0){
-			Point2D king = curGame.brett.searchFigCoordByIndex(kingID);
+			Point king = curGame.brett.searchFigCoordByIndex(kingID);
 			curGame.brett.getFelder()[(int)king.getX()][(int)king.getY()].setBackground(Color.MAGENTA);
 		}
 	}
@@ -341,7 +341,7 @@ class GUI {
 	 * @param list Felder auf die man sich bewegen kann
 	 * @param figPos Position der Figur, welche auf besagte Felder kann
 	 */
-	public void hightlightPos(List<Point2D> list, Point2D figPos){
+	public void hightlightPos(List<Point> list, Point figPos){
 		
 		for(Field[] f: curGame.brett.getFelder()){
 			for(Field fx: f){

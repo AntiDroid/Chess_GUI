@@ -1,4 +1,5 @@
 package figures;
+import utilities.Point;
 import javafx.geometry.Point2D;
 
 
@@ -8,11 +9,11 @@ public class King extends Figure {
 	
 	/**
 	 * Rochade ist am Anfang true. Dieser Werte wird in der move-Methode veraendert.
-	 * @param sP Startposition der Figur
+	 * @param point Startposition der Figur
 	 * @param iW Teamfarbe
 	 */
-	public King(Boolean iW, Point2D sP){
-		super(sP, iW, "Figurenbilder/King_", "King");
+	public King(Boolean iW, Point point){
+		super(point, iW, "Figurenbilder/King_", "King");
 		Rochade = true;
 	}
 	
