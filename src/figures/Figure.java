@@ -46,6 +46,8 @@ public abstract class Figure {
 		}
 	}
 	
+	public abstract void move();
+	
 	public String getName(){
 		return name;
 	}

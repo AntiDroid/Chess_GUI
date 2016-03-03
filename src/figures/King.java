@@ -23,4 +23,10 @@ public class King extends Figure {
 	public void setRochade(boolean r) {
 		Rochade = r;
 	}
+
+	@Override
+	public void move() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -34,4 +34,10 @@ public class Pawn extends Figure {
 	public void setDoublemove(boolean doublemove) {
 		this.doublemove = doublemove;
 	}
+
+	@Override
+	public void move() {
+		// TODO Auto-generated method stub
+		
+	}
 }

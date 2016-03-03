@@ -361,6 +361,20 @@ class GUI {
 		}
 	}
 	
+	public String selectPawnPromotion(){
+		
+		String[] choices = {"Knight", "Rook", "Bishop", "Queen"};
+		String input;
+		
+		do{
+			
+	    input = (String) JOptionPane.showInputDialog(null, "Choose a figure!", "Promote your pawn!", JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
+	    
+		}while(input == null);
+		
+		return input;
+	}
+	
 	/**
 	 * Situationen, welche nach der Bewegung einer Figur auftreten koennen,
 	 * werden durchgegangen
