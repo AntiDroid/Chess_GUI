@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import utilities.Point;
 import figures.Bishop;
 import figures.Figure;
 import figures.King;
@@ -13,6 +12,7 @@ import figures.Knight;
 import figures.Pawn;
 import figures.Queen;
 import figures.Rook;
+import utilities.Point;
 
 public class Schachbrett {
 	
@@ -22,8 +22,8 @@ public class Schachbrett {
 	private int selectedFig;
 	private Point posSelectedFig;
 	
-	private Boolean whiteCheck;
-	private Boolean blackCheck;
+	private boolean whiteCheck;
+	private boolean blackCheck;
 	
 	public static final Point NO_FIG_COORD = new Point(100000, 100000);
 	
@@ -39,7 +39,7 @@ public class Schachbrett {
 		selectedFig = 0;
 		posSelectedFig = new Point(10,10);
 		
-		Boolean white = true;;
+		boolean white = true;;
 		//Koordinatensystem - von Oben/Links nach Unten/Rechts
 		for(int i = 0; i<8; i++){
 			for(int j = 0; j<8; j++){
@@ -63,11 +63,11 @@ public class Schachbrett {
 		return selectedFig;
 	}
 	
-	public Boolean getWhiteChecK(){
+	public boolean getWhiteChecK(){
 		return whiteCheck;
 	}
 
-	public Boolean getBlackChecK(){
+	public boolean getBlackChecK(){
 		return blackCheck;
 	}
 	
@@ -164,7 +164,7 @@ public class Schachbrett {
 	 * der sie steht abgewickelt
 	 * @return ob der Vorgang erfolgreich war
 	 */
-	public Boolean selectFigur(Point coord){
+	public boolean selectFigur(Point coord){
 		if(searchFigIndexByCoord(coord) != Field.emptyField){
 			selectedFig = searchFigIndexByCoord(coord);
 			posSelectedFig = coord;
@@ -233,10 +233,10 @@ public class Schachbrett {
 	 * Der Bauerntausch mit einem Eingabedialog fuer die gewuenschte Figur.
 	 * @param iW die Teamfarbe des Bauern
 	 */
-	public void promotePawn(Boolean iW){
+	public void promotePawn(boolean iW){
 		
 	
-		Boolean retry = true;;
+		boolean retry = true;;
 		String[] choices = {"Knight", "Rook", "Bishop", "Queen"};
 		String input = "lol";
 		
@@ -318,7 +318,7 @@ public class Schachbrett {
 		
 		for(int i = pawnMin; i < pawnMax; i++){
 			if(Fig[i] instanceof Pawn)
-				((Pawn)Fig[i]).SetEnPassant(false);
+				((Pawn)Fig[i]).setEnPassant(false);
 		}
 		
 		
@@ -366,7 +366,7 @@ public class Schachbrett {
 			
 			//Doppelzug
 			if(Math.abs(yGo-posSelectedFig.getY()) == 2){
-				((Pawn)Fig[selectedFig]).SetEnPassant(true);
+				((Pawn)Fig[selectedFig]).setEnPassant(true);
 			}
 			else if(xGo != xNow){
 				if((yGo-1 != -1 && yGo+1 != 8) && (felder[xGo][yGo].getBelegung() == Field.emptyField)){
@@ -400,19 +400,19 @@ public class Schachbrett {
 		
 		changePos(p);
 		
-		Boolean checkedOne = !Fig[selectedFig].getIW();
+		boolean checkedOne = !Fig[selectedFig].getIW();
 		
 		//check if the enemy is in check
 		if(checkedOne)
-			whiteCheck = Schach(checkedOne);
+			whiteCheck = schach(checkedOne);
 		else if(!checkedOne)
-			blackCheck = Schach(checkedOne);
+			blackCheck = schach(checkedOne);
 		
 		//check if you escaped from a check
 		if(!checkedOne)
-			whiteCheck = Schach(!checkedOne);
+			whiteCheck = schach(!checkedOne);
 		else if(checkedOne)
-			blackCheck = Schach(!checkedOne);
+			blackCheck = schach(!checkedOne);
 		
 	}
 
@@ -514,7 +514,7 @@ public class Schachbrett {
 		else if(this.Fig[selectedFig] instanceof King){
 			
 			int rochRookL, rochRookR;
-			Boolean check;
+			boolean check;
 			
 			if(Fig[selectedFig].getIW()){
 				rochRookL = 0;
@@ -596,7 +596,7 @@ public class Schachbrett {
 				possibleEnemy = this.felder[x-1][y].getBelegung();
 				if(possibleEnemy != Field.emptyField){
 					if(Fig[possibleEnemy].getIW() != Fig[selectedFig].getIW() && Fig[possibleEnemy] instanceof Pawn)
-						if(((Pawn)Fig[possibleEnemy]).GetEnPassant())
+						if(((Pawn)Fig[possibleEnemy]).getEnPassant())
 							moveP.addAll(moveCrap(x, y+varY, -1, 0, x-2, 10));	
 				}
 			}
@@ -614,7 +614,7 @@ public class Schachbrett {
 				possibleEnemy = this.felder[x+1][y].getBelegung();
 				if(possibleEnemy != Field.emptyField){
 					if(Fig[possibleEnemy].getIW() != Fig[selectedFig].getIW() && Fig[possibleEnemy] instanceof Pawn)
-						if(((Pawn)Fig[possibleEnemy]).GetEnPassant())
+						if(((Pawn)Fig[possibleEnemy]).getEnPassant())
 							moveP.addAll(moveCrap(x, y, 1, varY, x+2, y+2));		
 				}	
 			}
@@ -628,11 +628,11 @@ public class Schachbrett {
 	 * @param iW die Teamfarbe der Figur
 	 * @return die gefilterte 
 	 */
-	public List<Point> checkFilteredMovePossibilities(Boolean iW){
+	public List<Point> checkFilteredMovePossibilities(boolean iW){
 		
 		Point curRealPos = posSelectedFig, curTestCoord;
 		int origBelegung;
-		Boolean remove;
+		boolean remove;
 		
 		List<Point> moves = movePossibilities();
 		
@@ -645,7 +645,7 @@ public class Schachbrett {
 			felder[(int)curTestCoord.getX()][(int)curTestCoord.getY()].clear();
 			
 			changePos(curTestCoord);
-			remove = this.Schach(iW);
+			remove = this.schach(iW);
 			changePos(curRealPos);
 			
 			felder[(int)curTestCoord.getX()][(int)curTestCoord.getY()].addFigur(origBelegung);
@@ -664,7 +664,7 @@ public class Schachbrett {
 	 * @param isW welches Team ist im Schach
 	 * @return ob das jeweilige Team im Schach ist
 	 */
-	public Boolean Schach(Boolean isW){
+	public boolean schach(boolean isW){
 		
 		//Standard für Schwarz
 		int gegnerStart = 0, myKingIndex = 30;
@@ -700,7 +700,7 @@ public class Schachbrett {
 	 * zu ermitteln und beim Aufruf der Methode ein Remis auszuloesen
 	 * @return ob ein King vs King vorliegt
 	 */
-	public Boolean king1v1(){
+	public boolean king1v1(){
 		
 		int counter = 0;
 		
@@ -724,7 +724,7 @@ public class Schachbrett {
 	 * @param isW welches Team ist im Patt
 	 * @return ob das jeweilige Team im Patt ist
 	 */
-	public Boolean Patt(Boolean isW){
+	public boolean patt(boolean isW){
 		
 		//Standard für Schwarz
 		int teamStart = 16;
@@ -756,9 +756,9 @@ public class Schachbrett {
 	 * @param isW welches Team im SchachMatt steht
 	 * @return ob das jeweilige Team im SchachMatt steht
 	 */
-	public Boolean SchachMatt(Boolean isW){
+	public boolean schachMatt(boolean isW){
 		
-		Boolean teamCheck;
+		boolean teamCheck;
 		
 		if(isW)
 			teamCheck = whiteCheck;
@@ -766,7 +766,7 @@ public class Schachbrett {
 			teamCheck = blackCheck;
 		
 		if(teamCheck)
-			if(Patt(isW))
+			if(patt(isW))
 				return true;
 		
 		return false;

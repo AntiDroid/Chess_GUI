@@ -1,27 +1,26 @@
 package figures;
 import utilities.Point;
-import javafx.geometry.Point2D;
 
 
 public class King extends Figure {
 
-	private Boolean Rochade;
+	private boolean Rochade;
 	
 	/**
 	 * Rochade ist am Anfang true. Dieser Werte wird in der move-Methode veraendert.
 	 * @param point Startposition der Figur
 	 * @param iW Teamfarbe
 	 */
-	public King(Boolean iW, Point point){
+	public King(boolean iW, Point point){
 		super(point, iW, "Figurenbilder/King_", "King");
 		Rochade = true;
 	}
 	
-	public Boolean getRochade() {
+	public boolean getRochade() {
 		return Rochade;
 	}
 	
-	public void setRochade(Boolean r) {
+	public void setRochade(boolean r) {
 		Rochade = r;
 	}
 }

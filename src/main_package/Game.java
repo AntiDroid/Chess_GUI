@@ -7,7 +7,7 @@ public class Game {
 	public Schachbrett brett;
 	private int winner;
 	private Player[] p;
-	private Boolean whiteTurn;
+	private boolean whiteTurn;
 	
 	public Game(Player p1, Player p2){
 		
@@ -27,7 +27,7 @@ public class Game {
 	 * Eine Ausgabe des Gewinners und das archivieren des Spiels wird durchgefuehrt
 	 * @param isWhite welches Team gewonnen hat
 	 */
-	public void Win(Boolean isWhite){
+	public void win(boolean isWhite){
 		if(p[0].getIsWhite() == isWhite)
 			winner = 0;
 		else
@@ -39,15 +39,15 @@ public class Game {
 	/**
 	 * Unentschieden durch Patt oder 1v1 King Situationen automatisch aufgerufen.
 	 */
-	public void Remis() {
+	public void remis() {
 		JOptionPane.showMessageDialog(null, "Remis!");
 	}
 	
-	public Boolean getWhiteTurn() {
+	public boolean getWhiteTurn() {
 		return whiteTurn;
 	}
 
-	public void setWhiteTurn(Boolean whiteTurn) {
+	public void setWhiteTurn(boolean whiteTurn) {
 		this.whiteTurn = whiteTurn;
 	}
 }

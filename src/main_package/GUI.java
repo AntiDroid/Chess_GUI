@@ -6,8 +6,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -24,6 +24,9 @@ import utilities.Point;
 
 class GUI {
 
+	//move Methode instanceof Problem
+	//Vermischung GUI und Logik
+	
 	Game curGame;
 	int player;
 	String name1, name2;
@@ -44,13 +47,13 @@ class GUI {
 	/**
 	 * Reaktionen auf Eingaben im normalen Spielverlauf
 	 */
-	MouseListener Func;
+	MouseAdapter Func;
 	
 	/**
 	 * Reaktionen auf Eingaben mit Fehlermeldungen, wenn das Spiel 
 	 * aktuell nicht mehr laeuft
 	 */
-	MouseListener noFunc;
+	MouseAdapter noFunc;
 	
 	public static void main(String[] args) {	
 		GUI ui = new GUI();
@@ -120,7 +123,7 @@ class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				curGame.Win(!curGame.getWhiteTurn());
+				curGame.win(!curGame.getWhiteTurn());
 				makeResponsive(false);
 			}
 		});
@@ -157,7 +160,7 @@ class GUI {
 		terminatedFig2 = new JPanel();
 		terminatedFig2.setLayout(new GridLayout(2, 8, 0, 0));
 
-		Func = new MouseListener(){
+		Func = new MouseAdapter(){
 
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -169,7 +172,7 @@ class GUI {
 				
 				updateVisual();
 				
-				Boolean pIsWhite = curGame.getPlayer()[player].getIsWhite();
+				boolean pIsWhite = curGame.getPlayer()[player].getIsWhite();
 				Field f = ((Field)arg0.getSource());
 				
 				//die Figurenauswahl - kein leeres Feld UND die Figur muss deiner Farbe entsprechen
@@ -218,57 +221,15 @@ class GUI {
 					}
 				}
 			}
-
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				
-			}
-
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-
-				
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				
-			}
 			
 		};
-		noFunc = new MouseListener(){
+		noFunc = new MouseAdapter(){
 
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				JOptionPane.showMessageDialog(mainFrame, "The game is over!\nStart a new one!");
 			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				
-			}
-			
-			
+	
 		};
 
 		player1Panel.add(player1);
@@ -383,7 +344,7 @@ class GUI {
 	 * Ob das Brett auf Eingaben reagieren soll oder nicht
 	 * @param respond Reaktionsfaehig oder nicht
 	 */
-	public void makeResponsive(Boolean respond){
+	public void makeResponsive(boolean respond){
 		
 		for(Field[] f: curGame.brett.getFelder()){
 			for(Field fx: f){
@@ -406,19 +367,19 @@ class GUI {
 	 */
 	public void checkForEnd(){
 		
-		if(curGame.brett.SchachMatt(!curGame.getWhiteTurn())){
+		if(curGame.brett.schachMatt(!curGame.getWhiteTurn())){
 			JOptionPane.showMessageDialog(null, "Checkmate!");
-			curGame.Win(curGame.getWhiteTurn());
+			curGame.win(curGame.getWhiteTurn());
 			makeResponsive(false);
 		}
-		else if(curGame.brett.Patt(!curGame.getWhiteTurn())){
+		else if(curGame.brett.patt(!curGame.getWhiteTurn())){
 			JOptionPane.showMessageDialog(null, "Patt!");
-			curGame.Remis();
+			curGame.remis();
 			makeResponsive(false);
 		}     
 		else if(curGame.brett.king1v1()){
 			JOptionPane.showMessageDialog(null, "King vs King Situation!");
-			curGame.Remis();
+			curGame.remis();
 			makeResponsive(false);
 		}
 		

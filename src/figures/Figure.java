@@ -12,7 +12,7 @@ public abstract class Figure {
 	
 	private Point startPosition;
 	private JLabel image;
-	private Boolean isWhite;
+	private boolean isWhite;
 	private String name;
 	
 	/**
@@ -22,7 +22,7 @@ public abstract class Figure {
 	 * @param fP filePath des Figurenbildes
 	 * @param n Name der Figur
 	 */
-	public Figure(Point sP, Boolean isW, String fP, String n){
+	public Figure(Point sP, boolean isW, String fP, String n){
 		
 		name = n;
 		isWhite = isW;
@@ -59,7 +59,7 @@ public abstract class Figure {
 		return startPosition;
 	}
 	
-	public Boolean getIW(){
+	public boolean getIW(){
 		return isWhite;
 	}
 	

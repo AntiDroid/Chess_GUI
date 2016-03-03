@@ -4,9 +4,9 @@ package main_package;
 public class Player {
 
 	private String name;
-	private Boolean isWhite;
+	private boolean isWhite;
 	
-	public Player(String name, Boolean isW){
+	public Player(String name, boolean isW){
 		this.name = name;
 		this.isWhite = isW;
 	}
@@ -14,7 +14,7 @@ public class Player {
 	public String getName(){
 		return name;
 	}
-	public Boolean getIsWhite(){
+	public boolean getIsWhite(){
 		return isWhite;
 	}
 }

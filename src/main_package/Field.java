@@ -10,11 +10,11 @@ class Field extends JPanel {
 	
 	private int belegung;
 	private Point koordinate;
-	private Boolean isWhite;
+	private boolean isWhite;
 	
 	static final int emptyField = 99;
 	
-	public Field(Point koord, Boolean iW){
+	public Field(Point koord, boolean iW){
 		belegung = emptyField;
 		this.koordinate = koord;
 		this.isWhite = iW;
@@ -25,7 +25,7 @@ class Field extends JPanel {
 		return this.belegung;
 	}
 	
-	public Boolean getIsWhite(){
+	public boolean getIsWhite(){
 		
 		return this.isWhite;
 	}
