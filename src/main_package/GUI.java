@@ -26,11 +26,11 @@ class GUI {
 
 	//move Methode instanceof Problem
 	//Vermischung GUI und Logik
-	
+
 	Game curGame;
 	int player;
 	String name1, name2;
-	
+
 	JFrame mainFrame;
 	JMenuBar menuBar;
 	JMenu menu1;
@@ -38,86 +38,86 @@ class GUI {
 	JPanel gamePanel, player1Panel, player2Panel;
 	JPanel terminatedFig1, terminatedFig2;
 	JLabel player1, player2;
-	
+
 	Color bField = new Color(100, 102, 0);
 	Color wField = new Color(140, 255, 255);
 	Color turnColor = Color.yellow;
 	Color hightlightColor = Color.darkGray;
-	
+
 	/**
 	 * Reaktionen auf Eingaben im normalen Spielverlauf
 	 */
 	MouseAdapter Func;
-	
+
 	/**
-	 * Reaktionen auf Eingaben mit Fehlermeldungen, wenn das Spiel 
+	 * Reaktionen auf Eingaben mit Fehlermeldungen, wenn das Spiel
 	 * aktuell nicht mehr laeuft
 	 */
 	MouseAdapter noFunc;
-	
-	public static void main(String[] args) {	
+
+	public static void main(String[] args) {
 		GUI ui = new GUI();
 		ui.buildGUI();
 	}
 
 	void buildGUI(){
-		
+
 		try{
-		
+
 		do{
 		name1 = JOptionPane.showInputDialog(null, "Enter your name!",
                 "BLACK",
                 JOptionPane.PLAIN_MESSAGE);
-		
+
 		if(name1.equals(""))
 			throw new NullPointerException();
-		
+
 		}while(!name1.matches("\\w+"));
-		
+
 		}
 		catch(NullPointerException n){
 			name1 = "Player 1";
 		}
-		
+
 		try{
-		
+
 		do{
 		name2 = JOptionPane.showInputDialog(null, "Enter your name!",
                 "WHITE",
                 JOptionPane.PLAIN_MESSAGE);
-		
+
 		if(name2.equals(""))
 			throw new NullPointerException();
-		
+
 		}while(name2.equals("") || !name2.matches("\\w+") || name2.equals(name1));
-		
+
 		}
 		catch(NullPointerException n){
 			name2 = "Player 2";
 		}
-		
+
 		curGame = new Game(new Player(name1, false), new Player(name2, true));
-		
+
 		mainFrame = new JFrame("Chess");
 		mainFrame.setBounds(400, 100, 1400, 900);
 		mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
+
 		menuBar = new JMenuBar();
 		menu1 = new JMenu("Game");
-		
+
 		mItem1 = new JMenuItem("New");
 		mItem1.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				curGame = new Game(new Player(name1, false), new Player(name2, true));	
+
+				curGame = new Game(new Player(name1, false), new Player(name2, true));
 				setUpNewGame();
-				
+
 			}
-			
+
 		});
-			
+
 		mItem2 = new JMenuItem("Give Up");
 		mItem2.addActionListener(new ActionListener(){
 
@@ -127,36 +127,36 @@ class GUI {
 				makeResponsive(false);
 			}
 		});
-		
+
 		gamePanel = new JPanel();
 		gamePanel.setBounds(50, 25, 800, 770);
 		gamePanel.setBackground(Color.BLACK);
 		gamePanel.setLayout(new GridLayout(8, 8, 3, 3));
 		gamePanel.setBorder(BorderFactory.createEmptyBorder( 7, 7, 7, 7));
-		
+
 		player1Panel = new JPanel();
 		player1Panel.setLayout(new BoxLayout(player1Panel, BoxLayout.PAGE_AXIS));
 		player1Panel.setBounds(900, 50, 450, 250);
 		player1Panel.setBorder(BorderFactory.createEmptyBorder( 7, 7, 7, 7));
 		player1Panel.setBackground(Color.white);
-		
+
 		player2Panel = new JPanel();
 		player2Panel.setLayout(new BoxLayout(player2Panel, BoxLayout.PAGE_AXIS));
 		player2Panel.setBounds(900, 515, 450, 250);
 		player2Panel.setBorder(BorderFactory.createEmptyBorder( 7, 7, 7, 7));
 		player2Panel.setBackground(turnColor);
-		
+
 		player1 = new JLabel("Black: "+curGame.getPlayer()[0].getName());
 		player1.setAlignmentX(Component.CENTER_ALIGNMENT);
 		player1.setFont(new Font("Serif", Font.BOLD, 24));
-		
+
 		player2 = new JLabel("White: "+curGame.getPlayer()[1].getName());
 		player2.setAlignmentX(Component.CENTER_ALIGNMENT);
 		player2.setFont(new Font("Serif", Font.BOLD, 24));
-		
+
 		terminatedFig1 = new JPanel();
 		terminatedFig1.setLayout(new GridLayout(2, 8, 0, 0));
-	
+
 		terminatedFig2 = new JPanel();
 		terminatedFig2.setLayout(new GridLayout(2, 8, 0, 0));
 
@@ -164,33 +164,33 @@ class GUI {
 
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
+
 				if(curGame.getWhiteTurn())
 					player = 1;
 				else
 					player = 0;
-				
+
 				updateVisual();
-				
+
 				boolean pIsWhite = curGame.getPlayer()[player].getIsWhite();
 				Field f = ((Field)arg0.getSource());
-				
+
 				//die Figurenauswahl - kein leeres Feld UND die Figur muss deiner Farbe entsprechen
 				if(f.getBelegung() != Field.emptyField && curGame.brett.getFigures()[f.getBelegung()].getIW() == pIsWhite){
-					
+
 					curGame.brett.selectFigur(f.getKoordinate());
 					List<Point> liste = curGame.brett.checkFilteredMovePossibilities(pIsWhite);
-					
+
 					hightlightPos(liste, f.getKoordinate());
 				}
 				//die Positionsauswahl - das ausgewaehlte Feld muss einer Bewegungsmoeglichkeit der selektierten Figur entsprechen
 				else if(pIsWhite == curGame.brett.getFigures()[curGame.brett.getSelFig()].getIW() && curGame.brett.checkFilteredMovePossibilities(pIsWhite).contains(f.getKoordinate())){
-					
+
 					curGame.brett.move(f.getKoordinate());
-					    
+
 					terminatedFig2.removeAll();
 					terminatedFig1.removeAll();
-					
+
 					for(int i = 0; i < curGame.brett.getFigures().length; i++){
 						if(curGame.brett.searchFigCoordByIndex(i) == Schachbrett.NO_FIG_COORD){
 
@@ -202,15 +202,15 @@ class GUI {
 								terminatedFig2.add(curGame.brett.getFigures()[i].getImage());
 								terminatedFig2.revalidate();
 							}
-							
+
 						}
 					}
-					
+
 					updateVisual();
 					checkForEnd();
-				
+
 					curGame.setWhiteTurn(!curGame.getWhiteTurn());
-					
+
 					if(curGame.getWhiteTurn()){
 						player2Panel.setBackground(turnColor);
 						player1Panel.setBackground(Color.white);
@@ -221,7 +221,7 @@ class GUI {
 					}
 				}
 			}
-			
+
 		};
 		noFunc = new MouseAdapter(){
 
@@ -229,27 +229,27 @@ class GUI {
 			public void mouseClicked(MouseEvent arg0) {
 				JOptionPane.showMessageDialog(mainFrame, "The game is over!\nStart a new one!");
 			}
-	
+
 		};
 
 		player1Panel.add(player1);
 		player1Panel.add(terminatedFig1);
 		player2Panel.add(player2);
 		player2Panel.add(terminatedFig2);
-		
+
 		mainFrame.setJMenuBar(menuBar);
 		mainFrame.add(gamePanel);
 		mainFrame.add(player1Panel);
 		mainFrame.add(player2Panel);
-		
+
 		menuBar.add(menu1);
 		menu1.add(mItem1);
 		menu1.add(mItem2);
-		
+
 		mainFrame.setResizable(false);
 		mainFrame.setLayout(null);
 		mainFrame.setVisible(true);;
-		
+
 		setUpNewGame();
 	}
 
@@ -257,40 +257,40 @@ class GUI {
 	 * Initialisieren des Feldes am Anfang jedes Spieles
 	 */
 	public void setUpNewGame(){
-		
+
 		terminatedFig1.removeAll();
 		terminatedFig2.removeAll();
 		gamePanel.removeAll();
-		
+
 		for(int y = 0; y<8; y++) {
 			for(int x = 0; x<8; x++) {
 				Field f = curGame.brett.getFelder()[x][y];
-				
+
 				if(f.getIsWhite())
 					f.setBackground(wField);
 				else
 					f.setBackground(bField);
-				
+
 				f.addMouseListener(Func);
 				gamePanel.add(f);
 			}
 		}
-		
+
 		updateVisual();
 	}
-	
+
 	/**
 	 * das Feld des Kings, welcher im Schach steht, faerben
 	 */
 	public void highlightCheck(){
-		
+
 		int kingID = 0;
-		
+
 		if(curGame.brett.getWhiteChecK())
 			kingID = 14;
 		else if(curGame.brett.getBlackChecK())
 			kingID = 30;
-		
+
 		if(kingID != 0){
 			Point king = curGame.brett.searchFigCoordByIndex(kingID);
 			curGame.brett.getFelder()[(int)king.getX()][(int)king.getY()].setBackground(Color.MAGENTA);
@@ -303,7 +303,7 @@ class GUI {
 	 * @param figPos Position der Figur, welche auf besagte Felder kann
 	 */
 	public void hightlightPos(List<Point> list, Point figPos){
-		
+
 		for(Field[] f: curGame.brett.getFelder()){
 			for(Field fx: f){
 				if(list.contains(fx.getKoordinate()))
@@ -312,15 +312,15 @@ class GUI {
 					fx.setBackground(Color.GRAY);
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * die Felder neu mit den Figurenbildern initialisieren, highlights entfernen
 	 * und gegebenfalls ein Schach-Highlight hinzufuegen
 	 */
 	public void updateVisual(){
-		
+
 		for(Field[] f: curGame.brett.getFelder()){
 			for(Field fx: f){
 				fx.removeAll();
@@ -331,21 +331,21 @@ class GUI {
 				if(fx.getIsWhite())
 					fx.setBackground(wField);
 				else
-					fx.setBackground(bField);	
+					fx.setBackground(bField);
 			}
-		}		
-		
+		}
+
 		highlightCheck();
 		gamePanel.repaint();
 		gamePanel.validate();
 	}
-	
+
 	/**
 	 * Ob das Brett auf Eingaben reagieren soll oder nicht
 	 * @param respond Reaktionsfaehig oder nicht
 	 */
 	public void makeResponsive(boolean respond){
-		
+
 		for(Field[] f: curGame.brett.getFelder()){
 			for(Field fx: f){
 
@@ -354,33 +354,33 @@ class GUI {
 					fx.addMouseListener(Func);
 				}
 				else{
-					fx.removeMouseListener(Func);
+				fx.removeMouseListener(Func);
 					fx.addMouseListener(noFunc);
 				}
 			}
 		}
 	}
-	
+
 	public String selectPawnPromotion(){
-		
+
 		String[] choices = {"Knight", "Rook", "Bishop", "Queen"};
 		String input;
-		
+
 		do{
-			
+
 	    input = (String) JOptionPane.showInputDialog(null, "Choose a figure!", "Promote your pawn!", JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
-	    
+
 		}while(input == null);
-		
+
 		return input;
 	}
-	
+
 	/**
 	 * Situationen, welche nach der Bewegung einer Figur auftreten koennen,
 	 * werden durchgegangen
 	 */
 	public void checkForEnd(){
-		
+
 		if(curGame.brett.schachMatt(!curGame.getWhiteTurn())){
 			JOptionPane.showMessageDialog(null, "Checkmate!");
 			curGame.win(curGame.getWhiteTurn());
@@ -390,15 +390,15 @@ class GUI {
 			JOptionPane.showMessageDialog(null, "Patt!");
 			curGame.remis();
 			makeResponsive(false);
-		}     
+		}
 		else if(curGame.brett.king1v1()){
 			JOptionPane.showMessageDialog(null, "King vs King Situation!");
 			curGame.remis();
 			makeResponsive(false);
 		}
-		
+
 	}
-	
+
 	}
-	
-	
+
+
